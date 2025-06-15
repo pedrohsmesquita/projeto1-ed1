@@ -1,72 +1,112 @@
-/*******************************************************************************************
-*
-*   raylib [core] example - Basic window
-*
-*   Example complexity rating: [â˜…â˜†â˜†â˜†] 1/4
-*
-*   Welcome to raylib!
-*
-*   To test examples, just press F6 and execute 'raylib_compile_execute' script
-*   Note that compiled executable is placed in the same folder as .c file
-*
-*   To test the examples on Web, press F6 and execute 'raylib_compile_execute_web' script
-*   Web version of the program is generated in the same folder as .c file
-*
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
-*
-*   Enjoy using raylib. :)
-*
-*   Example originally created with raylib 1.0, last time updated with raylib 1.0
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2013-2025 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
+#include "torcido.h"
+#include "render.h"
+#include "mouse.h"
 
-#include "raylib.h"
+enum OpcoesTelaInicial {INVALIDO, JOGAR, AJUDA, SAIR};
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-int main(void)
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3);
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+int main(void) {
+    const int LARGURA = 800;
+    const int ALTURA = 450;
+    bool janelaAtiva;
+    OpcoesTelaInicial opcao;
+    CaixaTexto ct1, ct2, ct3;
+    Mouse *mouse = obterMouse();
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    inicializarCaixaTexto(ct1, ct2, ct3);
+    SetConfigFlags (FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
+    InitWindow(LARGURA, ALTURA, "Torcido");
+    SetExitKey(0);
+    InitAudioDevice();
+    SetTargetFPS(60);
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
+    janelaAtiva = !WindowShouldClose();
+    opcao = INVALIDO;
+    while (janelaAtiva) {
+        ct1.caixa.mouseSobre = false; ct1.texto.mouseSobre = false; // PROVISÓRIO
+        ct2.caixa.mouseSobre = false; ct2.texto.mouseSobre = false; // PROVISÓRIO
+        ct3.caixa.mouseSobre = false; ct3.texto.mouseSobre = false; // PROVISÓRIO
+        switch (opcao) {
+        case JOGAR:
+            telaJogo();
+            opcao = INVALIDO;
+            break;
+        case AJUDA:
+            telaAjuda();
+            opcao = INVALIDO;
+            break;
+        case SAIR:
+            janelaAtiva = false;
+            break;
+        default:
+            break;
+        }
+        if (janelaAtiva) {
+            lerMouse(*mouse);
+            if (CheckCollisionPointRec(mouse->posicao, ct1.caixa.retangulo)) {          // PROVISÓRIO
+                ct1.caixa.mouseSobre = true; ct1.texto.mouseSobre = true;
+                if (mouse->botaoEsqClick)
+                    mouse->opcaoSelecionada = ct1.id;
+            } else if (CheckCollisionPointRec(mouse->posicao, ct2.caixa.retangulo)) {   // PROVISÓRIO
+                ct2.caixa.mouseSobre = true; ct2.texto.mouseSobre = true;
+                if (mouse->botaoEsqClick)
+                    mouse->opcaoSelecionada = ct2.id;
+            } else if (CheckCollisionPointRec(mouse->posicao, ct3.caixa.retangulo)) {   // PROVISÓRIO
+                ct3.caixa.mouseSobre = true; ct3.texto.mouseSobre = true;
+                if (mouse->botaoEsqClick)
+                    mouse->opcaoSelecionada = ct3.id;
+            }
+            opcao = (OpcoesTelaInicial) mouse->opcaoSelecionada;
+            BeginDrawing();                     // Todo desenho deve estar entre BeginDrawing() e EndDrawing()
+                ClearBackground(RAYWHITE);
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
-        EndDrawing();
-        //----------------------------------------------------------------------------------
+                desenharBotao(ct1, 1.0f, 1.0f);
+                desenharBotao(ct2, 1.0f, 1.0f);
+                desenharBotao(ct3, 1.0f, 1.0f);
+            EndDrawing();
+            janelaAtiva = !WindowShouldClose();
+        }
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+    CloseWindow();
 
     return 0;
+}
+
+// Inicialização qualquer apenas para testes
+void inicializarCaixaTexto(CaixaTexto &ct) {
+    ct.caixa.cor = BLUE;
+    ct.caixa.cor = DARKBLUE;
+    ct.caixa.mouseSobre = false;
+    ct.caixa.redondeza = 0.1;
+    ct.caixa.segmentos = 10;
+    ct.caixa.retangulo = {
+        200.0f, 100.0f,
+        80.0f, 30.0f
+    };
+
+    ct.texto.cor = WHITE;
+    ct.texto.corSobre = RED;
+    ct.texto.espacamento = 1.0f;
+    ct.texto.mouseSobre = false;
+    ct.texto.tamanho = 14.0f;
+    ct.texto.posicao = {ct.caixa.retangulo.x, ct.caixa.retangulo.y + 5.0f};
+    ct.texto.fonte = GetFontDefault();
+}
+
+void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3) {
+    ct1.id = JOGAR;
+    ct1.texto.conteudo = "Jogar";
+    inicializarCaixaTexto(ct1);
+    ct2.id = AJUDA;
+    ct2.texto.conteudo = "Ajuda";
+    inicializarCaixaTexto(ct2);
+    ct2.caixa.retangulo.y += 50.0f;
+    ct2.texto.posicao.y += 50.f;
+    ct3.id = SAIR;
+    ct3.texto.conteudo = "Sair";
+    inicializarCaixaTexto(ct3);
+    ct3.caixa.retangulo.y += 100.0f;
+    ct3.texto.posicao.y += 100.f;
 }
