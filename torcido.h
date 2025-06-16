@@ -4,7 +4,7 @@
 #include "interface.h"
 #include "mouse.h"
 
-void telaJogo() {};
-void telaAjuda() {};
+void telaJogo();
+void telaAjuda();
 
 #endif // TORCIDO_H
