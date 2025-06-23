@@ -6,4 +6,6 @@
 
 void desenharBotao(const CaixaTexto &ct, float grossura, float escurecer);
 
+void desenharLetraContorno(const Texto& texto, float grossura);
+
 #endif // RENDER_H
