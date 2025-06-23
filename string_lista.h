@@ -9,6 +9,7 @@ namespace string_lista {
     struct NodoString {
         char val;
         NodoString *prox;
+        NodoString *ant;
     };
 
     struct String {
@@ -16,18 +17,25 @@ namespace string_lista {
         NodoString *ultimo;
     };
 
+    typedef NodoString *Apontador;
+
     /**
      * Inicializa a nossa String (idêntico a como listas são criadas). Utilizamos
      * a célula cabeça para armazenar o tamanho da String.
      */
-    void criarLista(String &valStr);
+    void criarLista(String &lista);
 
     /**
      * Insere um novo nó (caractere) ao final da nossa String.
      */
-    void insereFinal(String &valStr, char c);
+    void insereFinal(String &lista, char c);
 
     namespace utils {
+        /**
+         * Percorre toda a string imprimindo os caracteres na tela.
+         */
+        void imprimir(String &lista);
+
         /**
          * Lê linha de um arquivo até encontrar o caractere de quebra de linha.
          * Retorna uma String da linha lida.
@@ -39,8 +47,10 @@ namespace string_lista {
          */
         void deletar(String &valStr);
 
-        // TODO: Função para comparar se duas String são iguais
-        // TODO: Função para checar se todas as letras contidas em uma String estão na outra String
+        bool comparaString(String &entrada, String &palavra_dicionario);
+
+        bool LetrasContidasNaPalavra(string_lista::String &entrada, string_lista::String &palavra);
+
         // TODO: Função para retornar embaralhar uma String embaralhada
     }
 }
