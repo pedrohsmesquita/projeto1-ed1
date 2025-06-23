@@ -44,7 +44,7 @@ namespace letra_lista {
         lista.ultimo = p->ant;
         if (lista.ultimo == NULL)
             lista.ultimo = lista.primeiro;
-        else lista.ultimo->prox = NULL;
+        lista.ultimo->prox = NULL;
         delete p;
     }
 }
