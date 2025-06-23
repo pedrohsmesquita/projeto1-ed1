@@ -8,4 +8,6 @@ void desenharBotao(const CaixaTexto &ct, float grossura, float escurecer);
 
 void desenharLetraContorno(const Texto& texto, float grossura);
 
+void desenharPalavra(const letra_lista::ListaLetra &listaV);
+
 #endif // RENDER_H

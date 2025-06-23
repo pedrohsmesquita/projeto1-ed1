@@ -44,4 +44,15 @@ void desenharBotao(const CaixaTexto &ct, float grossura, float escurecer) {
     desenharLetraContorno(ct.texto, grossura);
 }
 
+void desenharPalavra(const letra_lista::ListaLetra &listaV) {
+    letra_lista::NodoLetra *no = listaV.primeiro->prox;
+    float x = 20.0f, y = 20.0f;
+
+    while (no != NULL) {
+        DrawTextCodepoint(GetFontDefault(), no->info.letra->val, (Vector2){x, y}, 16.0f, BLACK);
+        x += 15; y += 15;
+        no = no->prox;
+    }
+}
+
 
