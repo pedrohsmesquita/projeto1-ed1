@@ -47,6 +47,21 @@ namespace letra_lista {
         lista.ultimo->prox = NULL;
         delete p;
     }
+
+    namespace utils {
+        void inserirString(ListaLetra &lista, string_lista::String &listaS) {
+            string_lista::NodoString *no = listaS.primeiro->prox;
+            while (no != NULL) {
+                insereFinal(lista, no);
+                no = no->prox;
+            }
+        }
+
+        void deletar(ListaLetra &lista) {
+            while (!vazia(lista))
+                removeInicio(lista);
+        }
+    }
 }
 
 namespace lista_list {

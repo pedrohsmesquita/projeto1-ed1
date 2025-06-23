@@ -74,6 +74,12 @@ namespace letra_lista {
     void removeInicio(ListaLetra &lista);
 
     void removeFinal(ListaLetra &lista);
+
+    namespace utils {
+        void inserirString(ListaLetra &lista, string_lista::String &listaS);
+
+        void deletar(ListaLetra &lista);
+    }
 }
 
 namespace lista_list {
