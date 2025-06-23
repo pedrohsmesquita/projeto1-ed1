@@ -47,11 +47,13 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="mouse.cpp" />
 		<Unit filename="mouse.h" />
+		<Unit filename="palavras_lista.cpp" />
 		<Unit filename="palavras_lista.h" />
 		<Unit filename="render.cpp" />
 		<Unit filename="render.h" />
 		<Unit filename="string_lista.cpp" />
 		<Unit filename="string_lista.h" />
+		<Unit filename="teclado.h" />
 		<Unit filename="torcido.cpp" />
 		<Unit filename="torcido.h" />
 		<Extensions>
