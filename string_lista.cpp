@@ -21,7 +21,9 @@ namespace string_lista {
         no->val = c;
         no->prox = NULL;
         no->ant = lista.ultimo;
-
+        if (lista.ultimo == lista.primeiro)
+            no->ant = NULL;
+        else no->ant = lista.ultimo;
         lista.ultimo->prox = no;
         lista.ultimo = no;
         lista.primeiro->val += 1;
