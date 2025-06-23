@@ -30,6 +30,8 @@ namespace string_lista {
      */
     void insereFinal(String &lista, char c);
 
+    void removeFinal(String &lista);
+
     namespace utils {
         /**
          * Percorre toda a string imprimindo os caracteres na tela.

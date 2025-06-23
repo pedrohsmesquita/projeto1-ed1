@@ -13,6 +13,10 @@ namespace string_lista {
         lista.ultimo = lista.primeiro;
     }
 
+    bool vazia(String &lista) {
+        return lista.primeiro == lista.ultimo;
+    }
+
     /**
      * Insere um novo nó (caractere) ao final da nossa String.
      */
@@ -27,6 +31,18 @@ namespace string_lista {
         lista.ultimo->prox = no;
         lista.ultimo = no;
         lista.primeiro->val += 1;
+    }
+
+    void removeFinal(String &lista) {
+        if (vazia(lista))
+            return;
+        NodoString *no = lista.ultimo;
+        lista.ultimo = no->ant;
+        if (lista.ultimo == NULL)
+            lista.ultimo = lista.primeiro;
+        else lista.ultimo->prox = NULL;
+        lista.primeiro->val--;
+        delete no;
     }
 
     namespace utils {
