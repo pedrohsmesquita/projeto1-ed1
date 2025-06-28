@@ -49,11 +49,13 @@ namespace string_lista {
          */
         void deletar(String &valStr);
 
+        void strcpy(String &dest, String &orig);
+
         bool comparaString(String &entrada, String &palavra_dicionario);
 
         bool LetrasContidasNaPalavra(string_lista::String &entrada, string_lista::String &palavra);
 
-        // TODO: Função para retornar embaralhar uma String embaralhada
+        void embaralhar(String &palavra);
     }
 }
 

@@ -90,6 +90,16 @@ namespace string_lista {
                 aux = linha.primeiro->prox;
             }
             linha.ultimo = linha.primeiro;
+            linha.primeiro->val = 0;
+        }
+
+        void strcpy(String &dest, String &orig) {
+            NodoString *no = orig.primeiro->prox;
+
+            while (no != NULL) {
+                insereFinal(dest, no->val);
+                no = no->prox;
+            }
         }
 
         bool comparaString(String &entrada, String &palavra_dicionario)
@@ -139,6 +149,30 @@ namespace string_lista {
                 }
             }
             return true;
+        }
+
+        void embaralhar(String &palavra) {
+            int tamanho = palavra.primeiro->val;
+            if (tamanho <= 1) return;
+
+            for (int i = 0; i < tamanho; i++) {
+                int pos1 = rand() % tamanho;
+                int pos2 = rand() % tamanho;
+
+                NodoString *n1 = palavra.primeiro->prox;
+                for (int j = 0; j < pos1; j++) {
+                    n1 = n1->prox;
+                }
+
+                NodoString *n2 = palavra.primeiro->prox;
+                for (int j = 0; j < pos2; j++) {
+                    n2 = n2->prox;
+                }
+
+                char temp = n1->val;
+                n1->val = n2->val;
+                n2->val = temp;
+            }
         }
     }
 }
