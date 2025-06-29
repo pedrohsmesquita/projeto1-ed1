@@ -44,15 +44,23 @@ void desenharBotao(const CaixaTexto &ct, float grossura, float escurecer) {
     desenharLetraContorno(ct.texto, grossura);
 }
 
-void desenharPalavra(const letra_lista::ListaLetra &listaV) {
-    letra_lista::NodoLetra *no = listaV.primeiro->prox;
-    float x = 20.0f, y = 20.0f;
+void desenharPalavra(const lista_grafica::ListaLetra &listaV) {
+    lista_grafica::NodoLetra *no = listaV.primeiro->prox;
 
     while (no != NULL) {
-        DrawTextCodepoint(GetFontDefault(), no->info.letra->val, (Vector2){x, y}, 16.0f, BLACK);
-        x += 15; y += 15;
+        float x = no->info.estilo.posicao.x;
+        DrawTextCodepoint(*(no->info.estilo.fonte), no->info.letra->val,
+                          no->info.estilo.posicao, no->info.estilo.tamanho, no->info.estilo.cor);
         no = no->prox;
     }
 }
 
+void desenharPalavraCaixa(const lista_grafica::ListaLetra &listaV) {
+    lista_grafica::NodoLetra *no = listaV.primeiro->prox;
 
+    while (no != NULL) {
+        DrawRectangleRounded(no->info.caixa.retangulo, no->info.caixa.redondeza, no->info.caixa.segmentos, no->info.caixa.cor);
+        no = no->prox;
+    }
+    desenharPalavra(listaV);
+}
