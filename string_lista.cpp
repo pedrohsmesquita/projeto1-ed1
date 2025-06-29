@@ -23,6 +23,7 @@ namespace string_lista {
     void insereFinal(String &lista, char c) {
         NodoString *no = new NodoString;
         no->val = c;
+        no->null = 0;
         no->prox = NULL;
         no->ant = lista.ultimo;
         if (lista.ultimo == lista.primeiro)

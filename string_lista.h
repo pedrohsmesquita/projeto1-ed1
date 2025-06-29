@@ -8,6 +8,7 @@
 namespace string_lista {
     struct NodoString {
         char val;
+        char null;
         NodoString *prox;
         NodoString *ant;
     };
