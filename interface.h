@@ -10,6 +10,7 @@
 #define ALTURA32_CHAR_PX 32
 #define ESPACAMENTO_LETRAS 4
 #define LETRA_ESCOLHIDA_TAM 30.0f
+#define LETRA_DIGITADA_TAM 18.0f
 
 struct Texto {
     Vector2 posicao;        // Posição do texto na tela
@@ -67,29 +68,51 @@ namespace lista_grafica {
         NodoLetra *ultimo;
     };
 
+    struct NodoCaixa {
+        Caixa caixa;
+        NodoCaixa *prox;
+    };
+
+    struct ListaCaixa {
+        NodoCaixa *primeiro;
+        NodoCaixa *ultimo;
+    };
+
     /**
      * Inicializa a lista e utiliza a célula cabeça para armazenar um estilo
      * base para futuras inserções.
      */
     void criarLista(ListaLetra &lista);
 
+    void criarLista(ListaCaixa &lista);
+
+    void criarLista(ListaLetra &lista, Caixa &caixa);
+
     bool vazia(ListaLetra &lista);
+
+    bool vazia(ListaCaixa &lista);
 
     /**
      * Insere no final da lista um nó que aponta para o respectivo nó da String.
      */
     void insereFinal(ListaLetra &lista, string_lista::NodoString *letra);
 
+    void insereFinal(ListaCaixa &lista, Caixa &caixa);
+
     void removeInicio(ListaLetra &lista);
 
     void removeFinal(ListaLetra &lista);
 
+    void removeFinal(ListaCaixa &lista);
+
     namespace utils {
-        void inserirString(ListaLetra &lista, string_lista::String &listaS);
+        void inserirString(ListaLetra &lista, string_lista::String &listaS, float espaco);
 
         void deletar(ListaLetra &lista);
 
-        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando);
+        void deletar(ListaCaixa &lista);
+
+        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando, float espaco);
     }
 }
 
@@ -111,10 +134,14 @@ namespace lista_list {
 
 Font *obterOpenSansSemiBold32();
 
+Font *obterOpenSansSemiBold18();
+
 void definirEstiloCabecaSorteada(lista_grafica::ListaLetra &lista);
 
 void centralizar(lista_grafica::ListaLetra &lista);
 
 void centralizarTextoCaixa(lista_grafica::NodoLetra *no);
+
+void letrasPlaceholders(lista_grafica::ListaLetra &listaP, lista_grafica::ListaCaixa &listaC);
 
 #endif // INTERFACE_H
