@@ -25,7 +25,6 @@ namespace string_lista {
         no->val = c;
         no->null = 0;
         no->prox = NULL;
-        no->ant = lista.ultimo;
         if (lista.ultimo == lista.primeiro)
             no->ant = NULL;
         else no->ant = lista.ultimo;
@@ -55,6 +54,7 @@ namespace string_lista {
         if (lista.ultimo == NULL)
             lista.ultimo = lista.primeiro;
         else lista.ultimo->prox = NULL;
+        lista.ultimo->prox = NULL;
         lista.primeiro->val--;
         delete no;
     }
@@ -96,13 +96,8 @@ namespace string_lista {
          * Deleta toda a String, deixando apenas a cabeça da String.
          */
         void deletar(String &linha) {
-            NodoString *aux = linha.primeiro->prox;
-
-            while (aux != NULL) {
-                linha.primeiro->prox = aux->prox;
-                delete aux;
-                aux = linha.primeiro->prox;
-            }
+            while (!vazia(linha))
+                removeFinal(linha);
             linha.ultimo = linha.primeiro;
             linha.primeiro->val = 0;
         }
@@ -120,12 +115,12 @@ namespace string_lista {
             deletar(dest);
             while (n > 0) {
                 int resto = n % 10;
-                insereInicio(dest, resto);
+                insereInicio(dest, '0' + resto);
                 n = n / 10;
                 zeros--;
             }
             while (zeros > 0) {
-                insereInicio(dest, 0);
+                insereInicio(dest, '0');
                 zeros--;
             }
         }
