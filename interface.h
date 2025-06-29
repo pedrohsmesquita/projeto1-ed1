@@ -4,6 +4,13 @@
 #include "raylib.h"
 #include "string_lista.h"
 
+#define LARGURA_TELA 800
+#define ALTURA_TELA 450
+#define LARGURA32_CHAR_PX 20
+#define ALTURA32_CHAR_PX 32
+#define ESPACAMENTO_LETRAS 4
+#define LETRA_ESCOLHIDA_TAM 30.0f
+
 struct Texto {
     Vector2 posicao;        // Posição do texto na tela
     char *conteudo;         // Conteúdo para ser desenhado
@@ -34,7 +41,7 @@ struct CaixaTexto {
  * Este namespace contém definição de uma outra lista cujo objetivo é auxiliar
  * no desenho gráficos dos caracteres da String implementada por lista.
  */
-namespace letra_lista {
+namespace lista_grafica {
     struct LetraEstilo {
         Vector2 posicao;                    // Posição da letra na tela
         float tamanho;                      // Tamanho da letra
@@ -44,6 +51,8 @@ namespace letra_lista {
 
     struct Letra {
         LetraEstilo estilo;                 // Estilo da letra
+        Caixa caixa;
+        bool animando;
         string_lista::NodoString *letra;    // Aponta para o nó da String
     };
 
@@ -62,7 +71,7 @@ namespace letra_lista {
      * Inicializa a lista e utiliza a célula cabeça para armazenar um estilo
      * base para futuras inserções.
      */
-    void criarLista(ListaLetra &lista, LetraEstilo &estiloBase);
+    void criarLista(ListaLetra &lista);
 
     bool vazia(ListaLetra &lista);
 
@@ -79,12 +88,14 @@ namespace letra_lista {
         void inserirString(ListaLetra &lista, string_lista::String &listaS);
 
         void deletar(ListaLetra &lista);
+
+        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando);
     }
 }
 
 namespace lista_list {
     struct NodoLista {
-        letra_lista::ListaLetra palavra;
+        lista_grafica::ListaLetra palavra;
         NodoLista *prox;
     };
 
@@ -95,7 +106,15 @@ namespace lista_list {
 
     void criarLista(ListaLista &lista);
 
-    void insereFinal(ListaLista &lista, letra_lista::ListaLetra &palavra);
+    void insereFinal(ListaLista &lista, lista_grafica::ListaLetra &palavra);
 }
+
+Font *obterOpenSansSemiBold32();
+
+void definirEstiloCabecaSorteada(lista_grafica::ListaLetra &lista);
+
+void centralizar(lista_grafica::ListaLetra &lista);
+
+void centralizarTextoCaixa(lista_grafica::NodoLetra *no);
 
 #endif // INTERFACE_H

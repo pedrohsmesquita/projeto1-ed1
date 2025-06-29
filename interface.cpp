@@ -1,9 +1,8 @@
 #include "interface.h"
 
-namespace letra_lista {
-    void criarLista(ListaLetra &lista, LetraEstilo &estiloBase) {
+namespace lista_grafica {
+    void criarLista(ListaLetra &lista) {
         lista.primeiro = new NodoLetra;
-        lista.primeiro->info.estilo = estiloBase;
         lista.primeiro->info.letra = NULL;
         lista.primeiro->prox = NULL;
         lista.primeiro->ant = NULL;
@@ -16,7 +15,7 @@ namespace letra_lista {
 
     void insereFinal(ListaLetra &lista, string_lista::NodoString *letra) {
         NodoLetra *p = new NodoLetra;
-        p->info.estilo = lista.primeiro->info.estilo;
+        //p->info.estilo = lista.primeiro->info.estilo;
         p->info.letra = letra;
         p->prox = NULL;
         if (lista.ultimo == lista.primeiro)
@@ -52,7 +51,7 @@ namespace letra_lista {
         void inserirString(ListaLetra &lista, string_lista::String &listaS) {
             string_lista::NodoString *no = listaS.primeiro->prox;
             while (no != NULL) {
-                insereFinal(lista, no);
+                inserirLetra(lista, no, false);
                 no = no->prox;
             }
         }
@@ -60,6 +59,13 @@ namespace letra_lista {
         void deletar(ListaLetra &lista) {
             while (!vazia(lista))
                 removeInicio(lista);
+        }
+
+        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando) {
+            insereFinal(lista, letra);
+            lista.ultimo->info.animando = animando;
+            lista.ultimo->info.estilo = lista.primeiro->info.estilo;
+            lista.ultimo->info.caixa = lista.primeiro->info.caixa;
         }
     }
 }
@@ -71,11 +77,57 @@ namespace lista_list {
         lista.ultimo = lista.primeiro;
     }
 
-    void insereFinal(ListaLista &lista, letra_lista::ListaLetra &palavra) {
+    void insereFinal(ListaLista &lista, lista_grafica::ListaLetra &palavra) {
         NodoLista *p = new NodoLista;
         p->palavra = palavra;
         p->prox = NULL;
         lista.ultimo->prox = p;
         lista.ultimo = p;
     }
+}
+
+#define OPENSANS_BOLD "assets/fonts/open-sans/OpenSans-Bold.ttf"
+
+Font *obterOpenSansSemiBold32() {
+    static Font fonte = LoadFontEx(OPENSANS_BOLD, LETRA_ESCOLHIDA_TAM, NULL, 0);
+
+    return &fonte;
+}
+
+void definirEstiloCabecaSorteada(lista_grafica::ListaLetra &lista) {
+    lista_grafica::LetraEstilo estilo;
+    Caixa caixa;
+
+    estilo.fonte = obterOpenSansSemiBold32();
+    estilo.cor = WHITE;
+    estilo.tamanho = LETRA_ESCOLHIDA_TAM;
+    estilo.posicao = {26.0f, ALTURA_TELA - 64.0f};
+    caixa.cor = BLACK;
+    caixa.redondeza = 0.3f;
+    caixa.retangulo = {estilo.posicao.x, estilo.posicao.y, 34.0f, estilo.tamanho + 8};
+    caixa.segmentos = 10;
+    lista.primeiro->info.estilo = estilo;
+    lista.primeiro->info.caixa = caixa;
+}
+
+void centralizar(lista_grafica::ListaLetra &lista){
+    lista_grafica::NodoLetra *no = lista.primeiro->prox;
+
+    no = lista.primeiro->prox;
+    centralizarTextoCaixa(no);
+    no = no->prox;
+    while (no != NULL) {
+        no->info.caixa.retangulo.x = no->ant->info.caixa.retangulo.x + no->info.caixa.retangulo.width + 3.0f;
+        centralizarTextoCaixa(no);
+        no = no->prox;
+    }
+}
+
+void centralizarTextoCaixa(lista_grafica::NodoLetra *no) {
+    Vector2 medidaAtual = MeasureTextEx(*no->info.estilo.fonte, &no->info.letra->val,
+                                        no->info.estilo.tamanho, 0.0f);
+    no->info.estilo.posicao.x = (no->info.caixa.retangulo.x + no->info.caixa.retangulo.width/2) -
+                            medidaAtual.x/2;
+    no->info.estilo.posicao.y = (no->info.caixa.retangulo.y + no->info.caixa.retangulo.height/2) -
+                            medidaAtual.y/2;;
 }
