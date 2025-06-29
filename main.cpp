@@ -1,19 +1,28 @@
+#include <ctime>
+#include <fstream>
 #include "torcido.h"
 #include "render.h"
 #include "mouse.h"
+#include "palavras_lista.h"
 
 enum OpcoesTelaInicial {INVALIDO, JOGAR, AJUDA, SAIR};
 
 void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3);
 
+void carregarDicionario(char *nomeArquivo, dicionario::ListaExterna &lista);
+
 int main(void) {
+    //srand(time(NULL));
     const int LARGURA = 800;
     const int ALTURA = 450;
     bool janelaAtiva;
     OpcoesTelaInicial opcao;
     CaixaTexto ct1, ct2, ct3;
     Mouse *mouse = obterMouse();
+    dicionario::ListaExterna dicionario;
 
+    dicionario::inicializarListaExterna(dicionario);
+    carregarDicionario("Lista-de-Palavras.txt", dicionario);
     inicializarCaixaTexto(ct1, ct2, ct3);
     SetConfigFlags (FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(LARGURA, ALTURA, "Torcido");
@@ -29,7 +38,7 @@ int main(void) {
         ct3.caixa.mouseSobre = false; ct3.texto.mouseSobre = false; // PROVISÓRIO
         switch (opcao) {
         case JOGAR:
-            telaJogo();
+            telaJogo(janelaAtiva, dicionario);
             opcao = INVALIDO;
             break;
         case AJUDA:
@@ -109,4 +118,18 @@ void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3) {
     inicializarCaixaTexto(ct3);
     ct3.caixa.retangulo.y += 100.0f;
     ct3.texto.posicao.y += 100.f;
+}
+
+void carregarDicionario(char *nomeArquivo, dicionario::ListaExterna &lista) {
+    string_lista::String linha;
+    std::ifstream arquivo(nomeArquivo);
+
+    dicionario::inicializarListaExterna(lista);
+    while (!arquivo.eof()) {
+        linha = string_lista::utils::lerLinha(arquivo);
+        if (linha.primeiro->val >= 3)
+            dicionario::utils::inserirPalavra(lista, linha);
+        else string_lista::utils::deletar(linha);
+    }
+    arquivo.close();
 }
