@@ -34,6 +34,19 @@ namespace string_lista {
         lista.primeiro->val += 1;
     }
 
+    void insereInicio(String &lista, char c) {
+        NodoString *no = new NodoString;
+        no->val = c;
+        no->null = 0;
+        no->prox = lista.primeiro->prox;
+        no->ant = NULL;
+        if (no->prox == NULL)
+            lista.ultimo = no;
+        else lista.primeiro->prox->ant = no;
+        lista.primeiro->prox = no;
+        lista.primeiro->val += 1;
+    }
+
     void removeFinal(String &lista) {
         if (vazia(lista))
             return;
@@ -100,6 +113,20 @@ namespace string_lista {
             while (no != NULL) {
                 insereFinal(dest, no->val);
                 no = no->prox;
+            }
+        }
+
+        void intStr(String &dest, int n, int zeros) {
+            deletar(dest);
+            while (n > 0) {
+                int resto = n % 10;
+                insereInicio(dest, resto);
+                n = n / 10;
+                zeros--;
+            }
+            while (zeros > 0) {
+                insereInicio(dest, 0);
+                zeros--;
             }
         }
 

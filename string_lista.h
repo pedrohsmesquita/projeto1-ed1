@@ -52,6 +52,8 @@ namespace string_lista {
 
         void strcpy(String &dest, String &orig);
 
+        void intStr(String &dest, int n, int zeros);
+
         bool comparaString(String &entrada, String &palavra_dicionario);
 
         bool LetrasContidasNaPalavra(string_lista::String &entrada, string_lista::String &palavra);
