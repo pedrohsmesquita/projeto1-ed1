@@ -64,3 +64,12 @@ void desenharPalavraCaixa(const lista_grafica::ListaLetra &listaV) {
     }
     desenharPalavra(listaV);
 }
+
+void desenharCaixa(const lista_grafica::ListaCaixa &lista) {
+    lista_grafica::NodoCaixa *no = lista.primeiro->prox;
+
+    while (no != NULL) {
+        DrawRectangleRounded(no->caixa.retangulo, no->caixa.redondeza, no->caixa.segmentos, no->caixa.cor);
+        no = no->prox;
+    }
+}

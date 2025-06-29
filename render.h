@@ -12,4 +12,6 @@ void desenharPalavra(const lista_grafica::ListaLetra &listaV);
 
 void desenharPalavraCaixa(const lista_grafica::ListaLetra &listaV);
 
+void desenharCaixa(const lista_grafica::ListaCaixa &lista);
+
 #endif // RENDER_H
