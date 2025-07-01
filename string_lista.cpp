@@ -164,7 +164,7 @@ namespace string_lista {
                     auxPalavra =auxPalavra->prox;
                 }
 
-                if(ContadorPalavras > ContadorEntrada){
+                if(ContadorPalavras < ContadorEntrada){
                     return false;
                 }
                  while (letraEntrada != NULL && letraEntrada->val == letraAtual) {
