@@ -24,7 +24,7 @@ namespace palavra_lista {
     void removeFinal(ListaPalavra &lista);
 
     namespace utils {
-        // TODO: Procurar se uma dada String existe na lista Palavra
+        void inserePalavra(ListaPalavra &lista, string_lista::String &palavra);
     }
 }
 

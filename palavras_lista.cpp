@@ -36,7 +36,12 @@ namespace palavra_lista {
     }
 
     namespace utils {
-        // TODO: Procurar se uma dada String existe na lista Palavra
+        void inserePalavra(ListaPalavra &lista, string_lista::String &palavra) {
+            string_lista::String copia;
+            string_lista::criarLista(copia);
+            string_lista::utils::strcpy(copia, palavra);
+            insereFinal(lista, copia);
+        }
     }
 }
 
