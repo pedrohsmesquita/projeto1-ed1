@@ -1,4 +1,5 @@
 #include "render.h"
+#include "palavras_lista.h"
 
 void escurecerCor(const Color& corOriginal, Color& cor, float fatorEscurecer) {
     cor.r = corOriginal.r * fatorEscurecer;
@@ -65,11 +66,36 @@ void desenharPalavraCaixa(const lista_grafica::ListaLetra &listaV) {
     desenharPalavra(listaV);
 }
 
+void desenharCronometro(const lista_grafica::ListaLetra &lista) {
+    DrawTextEx(*lista.primeiro->info.estilo.fonte,
+               "Tempo",
+               (Vector2){lista.primeiro->info.estilo.posicao.x, lista.primeiro->info.estilo.posicao.y - 16.0f},
+               lista.primeiro->info.estilo.tamanho, 0.0f, lista.primeiro->info.estilo.cor);
+    desenharPalavra(lista);
+}
+
+void desenharPontuacao(const lista_grafica::ListaLetra &lista) {
+    DrawTextEx(*lista.primeiro->info.estilo.fonte,
+               "Pontuacao",
+               (Vector2){lista.primeiro->info.estilo.posicao.x, lista.primeiro->info.estilo.posicao.y - 16.0f},
+               lista.primeiro->info.estilo.tamanho, 0.0f, lista.primeiro->info.estilo.cor);
+    desenharPalavra(lista);
+}
+
 void desenharCaixa(const lista_grafica::ListaCaixa &lista) {
     lista_grafica::NodoCaixa *no = lista.primeiro->prox;
 
     while (no != NULL) {
         DrawRectangleRounded(no->caixa.retangulo, no->caixa.redondeza, no->caixa.segmentos, no->caixa.cor);
+        no = no->prox;
+    }
+}
+
+void desenharListaPalavras(lista_list::ListaLista &lista) {
+    lista_list::NodoLista *no = lista.primeiro;
+
+    while (no != NULL) {
+        desenharPalavra(no->palavra);
         no = no->prox;
     }
 }

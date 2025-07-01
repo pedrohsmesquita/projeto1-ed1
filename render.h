@@ -14,4 +14,10 @@ void desenharPalavraCaixa(const lista_grafica::ListaLetra &listaV);
 
 void desenharCaixa(const lista_grafica::ListaCaixa &lista);
 
+void desenharCronometro(const lista_grafica::ListaLetra &lista);
+
+void desenharPontuacao(const lista_grafica::ListaLetra &lista);
+
+void desenharListaPalavras(lista_list::ListaLista &lista);
+
 #endif // RENDER_H
