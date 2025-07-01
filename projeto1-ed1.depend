@@ -1,8 +1,11 @@
 # depslib dependency file v1.0
-1750116291 source:c:\users\pedro\code\ed1\projeto1-ed1\main.cpp
+1750704571 source:c:\users\pedro\code\ed1\projeto1-ed1\main.cpp
+	<ctime>
+	<fstream>
 	"torcido.h"
 	"render.h"
 	"mouse.h"
+	"palavras_lista.h"
 
 1731932470 c:\users\pedro\code\ed1\projeto1-ed1\raylib\src\raylib.h
 	<stdarg.h>
@@ -14,32 +17,50 @@
 1749951042 c:\users\pedro\code\ed1\projeto1-ed1\mouse.h
 	"raylib.h"
 
-1749951944 source:c:\users\pedro\code\ed1\projeto1-ed1\string_lista.cpp
+1751327683 source:c:\users\pedro\code\ed1\projeto1-ed1\string_lista.cpp
 	"string_lista.h"
 
-1749951940 c:\users\pedro\code\ed1\projeto1-ed1\string_lista.h
+1751228947 c:\users\pedro\code\ed1\projeto1-ed1\string_lista.h
 	<stdlib.h>
 	<iostream>
 	<fstream>
 
-1750116300 c:\users\pedro\code\ed1\projeto1-ed1\torcido.h
+1750701814 c:\users\pedro\code\ed1\projeto1-ed1\torcido.h
 	"interface.h"
+	"string_lista.h"
 	"mouse.h"
+	"palavras_lista.h"
 
-1749949991 c:\users\pedro\code\ed1\projeto1-ed1\interface.h
+1751332967 c:\users\pedro\code\ed1\projeto1-ed1\interface.h
 	"raylib.h"
 	"string_lista.h"
+	"palavras_lista.h"
 
-1749949802 source:c:\users\pedro\code\ed1\projeto1-ed1\interface.cpp
+1751336664 source:c:\users\pedro\code\ed1\projeto1-ed1\interface.cpp
 	"interface.h"
 
-1749949913 source:c:\users\pedro\code\ed1\projeto1-ed1\render.cpp
+1751335212 source:c:\users\pedro\code\ed1\projeto1-ed1\render.cpp
 	"render.h"
+	"palavras_lista.h"
 
-1749950004 c:\users\pedro\code\ed1\projeto1-ed1\render.h
+1751335228 c:\users\pedro\code\ed1\projeto1-ed1\render.h
 	"raylib.h"
 	"interface.h"
 
-1750116327 source:c:\users\pedro\code\ed1\projeto1-ed1\torcido.cpp
+1751336927 source:c:\users\pedro\code\ed1\projeto1-ed1\torcido.cpp
 	"torcido.h"
+	"render.h"
+	"teclado.h"
+
+1751226527 c:\users\pedro\code\ed1\projeto1-ed1\teclado.h
+	"raylib.h"
+	<cstring>
+	"interface.h"
+	"string_lista.h"
+
+1751335068 c:\users\pedro\code\ed1\projeto1-ed1\palavras_lista.h
+	"string_lista.h"
+
+1751335063 source:c:\users\pedro\code\ed1\projeto1-ed1\palavras_lista.cpp
+	"palavras_lista.h"
 
