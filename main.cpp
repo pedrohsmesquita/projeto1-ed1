@@ -9,7 +9,7 @@ enum OpcoesTelaInicial {INVALIDO, JOGAR, AJUDA, SAIR};
 
 void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3);
 
-void carregarDicionario(char *nomeArquivo, dicionario::ListaExterna &lista);
+void carregarDicionario(char *nomeArquivo,  palavra_lista::ListaPalavra &lista);
 
 int main(void) {
     //srand(time(NULL));
@@ -19,10 +19,17 @@ int main(void) {
     OpcoesTelaInicial opcao;
     CaixaTexto ct1, ct2, ct3;
     Mouse *mouse = obterMouse();
-    dicionario::ListaExterna dicionario;
+    //dicionario::ListaExterna dicionario;
+    palavra_lista::ListaPalavra dicionario;
+    tbl_indxd::TabelaIndexada tabela;
 
-    dicionario::inicializarListaExterna(dicionario);
+    //dicionario::inicializarListaExterna(dicionario);
+    // Dicionário e Tabela Indexada
+    tbl_indxd::criarTabela(tabela);
+    palavra_lista::criarLista(dicionario);
     carregarDicionario("Lista-de-Palavras.txt", dicionario);
+    tbl_indxd::utils::indexarTabela(tabela, dicionario);
+    //
     inicializarCaixaTexto(ct1, ct2, ct3);
     SetConfigFlags (FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(LARGURA, ALTURA, "Torcido");
@@ -38,7 +45,7 @@ int main(void) {
         ct3.caixa.mouseSobre = false; ct3.texto.mouseSobre = false; // PROVISÓRIO
         switch (opcao) {
         case JOGAR:
-            telaJogo(janelaAtiva, dicionario);
+            telaJogo(janelaAtiva, tabela);
             opcao = INVALIDO;
             break;
         case AJUDA:
@@ -120,15 +127,15 @@ void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3) {
     ct3.texto.posicao.y += 100.f;
 }
 
-void carregarDicionario(char *nomeArquivo, dicionario::ListaExterna &lista) {
+void carregarDicionario(char *nomeArquivo,  palavra_lista::ListaPalavra &lista) {
     string_lista::String linha;
     std::ifstream arquivo(nomeArquivo);
 
-    dicionario::inicializarListaExterna(lista);
+    //dicionario::inicializarListaExterna(lista);
     while (!arquivo.eof()) {
         linha = string_lista::utils::lerLinha(arquivo);
         if (linha.primeiro->val >= 3)
-            dicionario::utils::inserirPalavra(lista, linha);
+            palavra_lista::insereFinal(lista, linha);
         else string_lista::utils::deletar(linha);
     }
     arquivo.close();

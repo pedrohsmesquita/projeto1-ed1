@@ -28,17 +28,38 @@ namespace palavra_lista {
     }
 }
 
+namespace tbl_indxd {
+    struct SegundoIndice {
+        palavra_lista::ListaPalavra lista;
+        SegundoIndice *prox;
+    };
+
+    struct PrimeiroIndice {
+        SegundoIndice celula;
+        PrimeiroIndice *prox;
+    };
+
+    struct TabelaIndexada {
+        PrimeiroIndice *dados;
+    };
+
+    void criarTabela(TabelaIndexada &tabela);
+
+    namespace utils {
+        bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela);
+
+        void escolherPalavra(TabelaIndexada &tabela, string_lista::String &palavra);
+
+        void indexarTabela(TabelaIndexada &tabela, palavra_lista::ListaPalavra &listaPalavra);
+    }
+}
+/*
 namespace dicionario {
-    /*
-     * Indexa a lista de palavras cuja segunda letra varia de "a" até "z"
-     */
     struct ListaInterna {
         palavra_lista::ListaPalavra lista;
         ListaInterna *prox;
     };
-    /*
-     * Indexa a lista de palavras cuja primeira letra varia de "a" até "z"
-     */
+
     struct ListaExterna {
         ListaInterna listaI;
         ListaExterna *prox;
@@ -49,20 +70,10 @@ namespace dicionario {
     void inicializarListaExterna(ListaExterna &lista);
 
     namespace utils {
-        /*
-         * Ponteiro para ListaExterna foi enviado por ser mais conviente para percorrer a lista.
-         * ListaExterna é percorrida em busca do nó que representa a primeira letra da String.
-         *
-         * Retorna um ponteiro para ListaInterna.
-         */
+
         ListaInterna *buscaIndiceAlfabetico(ListaExterna *listaPtr, string_lista::String &palavra);
 
-        /*
-         * Ponteiro para ListaInterna foi enviado por ser mais conviente para percorrer a lista.
-         * ListaInterna é percorrida em busca do nó que representa a segunda letra da String.
-         *
-         * Retorna um ponteiro para Palavra (que é a lista de palavras).
-         */
+
         palavra_lista::ListaPalavra *buscaIndiceAlfabetico(ListaInterna *listaPtr, string_lista::String &palavra);
 
         void inserirPalavra(ListaExterna &listaE, string_lista::String &palavra);
@@ -74,5 +85,6 @@ namespace dicionario {
         void escolherPalavra(dicionario::ListaExterna *lista, string_lista::String &palavra);
     }
 }
+*/
 
 #endif // PALAVRAS_LISTA_H

@@ -15,13 +15,13 @@ enum Resultado {INVALIDA, VALIDA, ACERTOU};
 void inicializarRelogioEstilo(lista_grafica::ListaLetra &tempo);
 void inicializarPontuacaoEstilo(lista_grafica::ListaLetra &pontuacao);
 void inicializarListaEntradas(lista_list::ListaLista &listaV);
-void escolherPalavra(string_lista::String &palavra, string_lista::String &embaralhada, dicionario::ListaExterna &dicionario);
+void escolherPalavra(string_lista::String &palavra, string_lista::String &embaralhada, tbl_indxd::TabelaIndexada &tabela);
 void processarGraficosEntrada(lista_grafica::ListaLetra &lista, TecladoStatus &status);
 void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista::String &tempoS, lista_grafica::ListaLetra &tempoV);
 void processarPontuacao(int pontuacao, string_lista::String &pontuacaoS, lista_grafica::ListaLetra &pontuacaoV);
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, dicionario::ListaExterna &dicionario);
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela);
 
-void telaJogo(bool &janelaAtiva, dicionario::ListaExterna &dicionario) {
+void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     string_lista::String entrada, palavraSorteada, palavraEmbaralhada, tempoS, pontuacaoS;
     palavra_lista::ListaPalavra listaPalavras;
     lista_grafica::ListaLetra entradaV, palavraSorteadaV, tempoV, pontuacaoV;
@@ -40,7 +40,7 @@ void telaJogo(bool &janelaAtiva, dicionario::ListaExterna &dicionario) {
     lista_grafica::criarLista(placeholders);
     string_lista::criarLista(entrada);
     string_lista::criarLista(palavraEmbaralhada);
-    escolherPalavra(palavraSorteada, palavraEmbaralhada, dicionario);
+    escolherPalavra(palavraSorteada, palavraEmbaralhada, tabela);
     definirEstiloCabecaSorteada(palavraSorteadaV);
     lista_grafica::utils::inserirString(palavraSorteadaV, palavraSorteada, 3.0f);
     //centralizar(palavraSorteadaV);
@@ -65,7 +65,7 @@ void telaJogo(bool &janelaAtiva, dicionario::ListaExterna &dicionario) {
         processarGraficosEntrada(entradaV, tecladoStatus);
         processarTemporizado(tempoRestante, tempoPassado, tempoS, tempoV);
         if (entrada.primeiro->val >= 3 && IsKeyPressed(KEY_ENTER)) {
-            Resultado resultado = validarPalavra(entrada, palavraSorteada, dicionario);
+            Resultado resultado = validarPalavra(entrada, palavraSorteada, tabela);
             if (resultado == INVALIDA) {
                 string_lista::utils::deletar(entrada);
                 lista_grafica::utils::deletar(entradaV);
@@ -80,7 +80,7 @@ void telaJogo(bool &janelaAtiva, dicionario::ListaExterna &dicionario) {
                 //lista_list::utils::inserePalavra(listaPalavrasV, listaPalavras);
                 string_lista::utils::deletar(palavraEmbaralhada);
                 //string_lista::utils::deletar(entrada);
-                escolherPalavra(palavraSorteada, palavraEmbaralhada, dicionario);
+                escolherPalavra(palavraSorteada, palavraEmbaralhada, tabela);
                 lista_grafica::utils::deletar(palavraSorteadaV);
                 lista_grafica::utils::deletar(placeholders);
                 //lista_grafica::utils::deletar(entradaV);
@@ -118,8 +118,8 @@ void telaAjuda() {
     Mouse *mouse = obterMouse();
 }
 
-void escolherPalavra(string_lista::String &palavra, string_lista::String &embaralhada, dicionario::ListaExterna &dicionario) {
-    dicionario::utils::escolherPalavra(&dicionario, palavra);
+void escolherPalavra(string_lista::String &palavra, string_lista::String &embaralhada, tbl_indxd::TabelaIndexada &tabela) {
+    tbl_indxd::utils::escolherPalavra(tabela, palavra);
     string_lista::utils::strcpy(embaralhada, palavra);
     string_lista::utils::embaralhar(embaralhada);
 }
@@ -157,13 +157,13 @@ void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista:
     }
 }
 
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, dicionario::ListaExterna &dicionario) {
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela) {
     using namespace string_lista::utils;
     if (!LetrasContidasNaPalavra(entrada, palavraEscolhida))
         return INVALIDA;
     if (comparaString(entrada, palavraEscolhida))
         return ACERTOU;
-    if (dicionario::utils::palavraInseridaExiste(entrada, &dicionario))
+    if (tbl_indxd::utils::palavraInseridaExiste(entrada, tabela))
         return VALIDA;
     return INVALIDA;
 }
