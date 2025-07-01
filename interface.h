@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 #include "string_lista.h"
+#include "palavras_lista.h"
 
 #define LARGURA_TELA 800
 #define ALTURA_TELA 450
@@ -108,11 +109,15 @@ namespace lista_grafica {
     namespace utils {
         void inserirString(ListaLetra &lista, string_lista::String &listaS, float espaco);
 
+        void inserirStringEstilo(ListaLetra &lista, string_lista::String &listaS);
+
         void deletar(ListaLetra &lista);
 
         void deletar(ListaCaixa &lista);
 
         void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando, float espaco);
+
+        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra);
     }
 }
 
@@ -130,6 +135,10 @@ namespace lista_list {
     void criarLista(ListaLista &lista);
 
     void insereFinal(ListaLista &lista, lista_grafica::ListaLetra &palavra);
+
+    namespace utils {
+        void inserePalavra(ListaLista &lista, palavra_lista::ListaPalavra &palavra);
+    }
 }
 
 Font *obterOpenSansSemiBold32();

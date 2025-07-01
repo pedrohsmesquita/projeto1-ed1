@@ -103,6 +103,22 @@ namespace lista_grafica {
             }
         }
 
+        void inserirStringEstilo(ListaLetra &lista, string_lista::String &listaS) {
+            string_lista::NodoString *no = listaS.primeiro->prox;
+            while (no != NULL) {
+                inserirLetra(lista, no);
+                no = no->prox;
+            }
+        }
+
+        void inserirString(ListaLetra &lista, string_lista::String &listaS) {
+            string_lista::NodoString *no = listaS.primeiro->prox;
+            while (no != NULL) {
+                insereFinal(lista, no);
+                no = no->prox;
+            }
+        }
+
         void deletar(ListaLetra &lista) {
             while (!vazia(lista))
                 removeInicio(lista);
@@ -131,6 +147,36 @@ namespace lista_grafica {
                 lista.ultimo->info.caixa.retangulo.y = 0;
             }
         }
+
+        void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra) {
+            insereFinal(lista, letra);
+            if (lista.ultimo->ant == NULL) {
+                lista.ultimo->info.estilo = lista.primeiro->info.estilo;
+            } else {
+                Vector2 medida = MeasureTextEx(*lista.ultimo->ant->info.estilo.fonte,
+                                              &lista.ultimo->ant->info.letra->val,
+                                              lista.ultimo->ant->info.estilo.tamanho,
+                                              0.0f);
+                lista.ultimo->info.estilo = lista.ultimo->ant->info.estilo;
+                lista.ultimo->info.estilo.posicao.x += medida.x;
+            }
+        }
+
+        void estilizarLista(ListaLetra &lista, LetraEstilo &estilo) {
+            NodoLetra *no = lista.primeiro->prox, *ant;
+
+            no->info.estilo = estilo;
+            ant = no;
+            no = no->prox;
+            while (no != NULL) {
+                no->info.estilo = ant->info.estilo;
+                Vector2 medida = MeasureTextEx(*ant->info.estilo.fonte, &ant->info.letra->val,
+                                               ant->info.estilo.tamanho, 0.0f);
+                no->info.estilo.posicao.x += medida.x;
+                ant = no;
+                no = no->prox;
+            }
+        }
     }
 }
 
@@ -147,6 +193,25 @@ namespace lista_list {
         p->prox = NULL;
         lista.ultimo->prox = p;
         lista.ultimo = p;
+    }
+
+    namespace utils {
+        void inserePalavra(ListaLista &lista, palavra_lista::ListaPalavra &palavra) {
+            NodoLista *ant = lista.ultimo;
+            lista_grafica::ListaLetra novaPalavra;
+            lista_grafica::LetraEstilo estilo;
+            lista_grafica::criarLista(novaPalavra);
+            lista_grafica::utils::inserirString(novaPalavra, palavra.ultimo->palavra);
+            insereFinal(lista, novaPalavra);
+
+            if (lista.primeiro->prox == lista.ultimo) {
+                estilo = lista.primeiro->palavra.primeiro->info.estilo;
+            } else {
+                estilo = ant->palavra.primeiro->prox->info.estilo;
+                estilo.posicao.y += 16.0f;
+            }
+            lista_grafica::utils::estilizarLista(lista.ultimo->palavra, estilo);
+        }
     }
 }
 
