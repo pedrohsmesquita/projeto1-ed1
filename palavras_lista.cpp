@@ -20,10 +20,8 @@ namespace palavra_lista {
     }
 
     void removeFinal(ListaPalavra &lista) {
-        if (vazia(lista)) {
-            printf("Lista vazia.\n");
-            exit(1);                    // Por agora, vamos fechar
-        }
+        if (vazia(lista))
+            return ;
         NodoPalavra *aux = lista.primeiro->prox, *tmp = lista.primeiro;
 
         while (aux->prox != NULL) {

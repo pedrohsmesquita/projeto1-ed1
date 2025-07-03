@@ -11,7 +11,14 @@
 #define ALTURA32_CHAR_PX 32
 #define ESPACAMENTO_LETRAS 4
 #define LETRA_ESCOLHIDA_TAM 30.0f
-#define LETRA_DIGITADA_TAM 18.0f
+#define LETRA_DIGITADA_TAM 24.0f
+
+struct Fontes {
+    Font openSansBold48;
+    Font openSansBold30;
+    Font openSansSemiBold18;
+    Font openSansSemiBold24;
+};
 
 struct Texto {
     Vector2 posicao;        // Posição do texto na tela
@@ -21,7 +28,7 @@ struct Texto {
     bool mouseSobre;        // Identifica se o mouse está sobre o elemento
     Color cor;              // Cor normal do texto
     Color corSobre;         // Cor para quando o mouse estiver por cima
-    Font fonte;            // Fonte para ser utilizada
+    Font *fonte;            // Fonte para ser utilizada
 };
 
 struct Caixa {
@@ -109,7 +116,7 @@ namespace lista_grafica {
     namespace utils {
         void inserirString(ListaLetra &lista, string_lista::String &listaS, float espaco);
 
-        void inserirStringEstilo(ListaLetra &lista, string_lista::String &listaS);
+        void inserirStringEstililizada(ListaLetra &lista, string_lista::String &listaS);
 
         void deletar(ListaLetra &lista);
 
@@ -141,7 +148,13 @@ namespace lista_list {
     }
 }
 
-Font *obterOpenSansSemiBold32();
+void carregarFontes();
+
+Font *obterOpenSansBold48();
+
+Font *obterOpenSansBold30();
+
+Font *obterOpenSansSemiBold24();
 
 Font *obterOpenSansSemiBold18();
 

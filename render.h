@@ -20,4 +20,10 @@ void desenharPontuacao(const lista_grafica::ListaLetra &lista);
 
 void desenharListaPalavras(lista_list::ListaLista &lista);
 
+void desenharTelaInicial();
+
+void carregarImagemTelaInicial();
+
+void descarregarImagemTelaInicial();
+
 #endif // RENDER_H

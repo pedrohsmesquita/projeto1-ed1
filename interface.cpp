@@ -15,10 +15,6 @@ namespace lista_grafica {
         lista.primeiro->prox = NULL;
         lista.primeiro->ant = NULL;
         lista.primeiro->info.caixa = caixa;
-        lista.primeiro->info.estilo.cor = WHITE;
-        lista.primeiro->info.estilo.posicao = {caixa.retangulo.x, caixa.retangulo.y};
-        lista.primeiro->info.estilo.tamanho = LETRA_DIGITADA_TAM;
-        lista.primeiro->info.estilo.fonte = obterOpenSansSemiBold18();
         lista.ultimo = lista.primeiro;
     }
 
@@ -103,7 +99,7 @@ namespace lista_grafica {
             }
         }
 
-        void inserirStringEstilo(ListaLetra &lista, string_lista::String &listaS) {
+        void inserirStringEstililizada(ListaLetra &lista, string_lista::String &listaS) {
             string_lista::NodoString *no = listaS.primeiro->prox;
             while (no != NULL) {
                 inserirLetra(lista, no);
@@ -218,17 +214,29 @@ namespace lista_list {
 #define OPENSANS_BOLD "assets/fonts/open-sans/OpenSans-Bold.ttf"
 #define OPENSANS_SEMIBOLD "assets/fonts/open-sans/OpenSans-Semibold.ttf"
 
+Fontes fontes;
+
+void carregarFontes() {
+    fontes.openSansBold48 = LoadFontEx(OPENSANS_BOLD, 48, NULL, 0);
+    fontes.openSansBold30 = LoadFontEx(OPENSANS_BOLD, LETRA_ESCOLHIDA_TAM, NULL, 0);
+    fontes.openSansSemiBold18 = LoadFontEx(OPENSANS_SEMIBOLD, 18.0f, NULL, 0);
+    fontes.openSansSemiBold24 = LoadFontEx(OPENSANS_SEMIBOLD, LETRA_DIGITADA_TAM, NULL, 0);
+}
+
+Font *obterOpenSansBold48() {
+    return &fontes.openSansBold48;
+}
 
 Font *obterOpenSansBold30() {
-    static Font fonte = LoadFontEx(OPENSANS_BOLD, LETRA_ESCOLHIDA_TAM, NULL, 0);
+    return &fontes.openSansBold30;
+}
 
-    return &fonte;
+Font *obterOpenSansSemiBold24() {
+    return &fontes.openSansSemiBold24;
 }
 
 Font *obterOpenSansSemiBold18() {
-    static Font fonte = LoadFontEx(OPENSANS_SEMIBOLD, LETRA_DIGITADA_TAM, NULL, 0);
-
-    return &fonte;
+    return &fontes.openSansSemiBold18;
 }
 
 void definirEstiloCabecaSorteada(lista_grafica::ListaLetra &lista) {
@@ -273,7 +281,7 @@ void letrasPlaceholders(lista_grafica::ListaLetra &listaP, lista_grafica::ListaC
     Caixa tmp;
     lista_grafica::NodoLetra *no = listaP.primeiro->prox;
 
-    tmp.cor = BLUE;
+    tmp.cor = (Color) {4, 35, 38, 255};
     tmp.redondeza = 0.2f;
     tmp.segmentos = 10;
     tmp.retangulo = {26.0f, ALTURA_TELA/2, 32.0f, 32.0f};

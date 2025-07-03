@@ -1,6 +1,8 @@
 #include "render.h"
 #include "palavras_lista.h"
 
+Texture2D imagemTelaInicial;
+
 void escurecerCor(const Color& corOriginal, Color& cor, float fatorEscurecer) {
     cor.r = corOriginal.r * fatorEscurecer;
     cor.g = corOriginal.g * fatorEscurecer;
@@ -15,20 +17,20 @@ void desenharLetraContorno(const Texto& texto, float grossura) {
     if (grossura > 0.0f) {
         Color corEscurecida;
         escurecerCor(cor, corEscurecida, 0.70f);
-        DrawTextEx(texto.fonte, texto.conteudo,
+        DrawTextEx(*texto.fonte, texto.conteudo,
                    (Vector2){texto.posicao.x - grossura, texto.posicao.y - grossura},
                    texto.tamanho, texto.espacamento, corEscurecida);
-        DrawTextEx(texto.fonte, texto.conteudo,
+        DrawTextEx(*texto.fonte, texto.conteudo,
                    (Vector2){texto.posicao.x + grossura, texto.posicao.y - grossura},
                    texto.tamanho, texto.espacamento, corEscurecida);
-        DrawTextEx(texto.fonte, texto.conteudo,
+        DrawTextEx(*texto.fonte, texto.conteudo,
                    (Vector2){texto.posicao.x - grossura, texto.posicao.y + grossura},
                    texto.tamanho, texto.espacamento, corEscurecida);
-        DrawTextEx(texto.fonte, texto.conteudo,
+        DrawTextEx(*texto.fonte, texto.conteudo,
                    (Vector2){texto.posicao.x + grossura, texto.posicao.y + grossura},
                    texto.tamanho, texto.espacamento, corEscurecida);
     }
-    DrawTextEx(texto.fonte, texto.conteudo, texto.posicao, texto.tamanho, texto.espacamento, cor);
+    DrawTextEx(*texto.fonte, texto.conteudo, texto.posicao, texto.tamanho, texto.espacamento, cor);
 
 }
 
@@ -98,4 +100,18 @@ void desenharListaPalavras(lista_list::ListaLista &lista) {
         desenharPalavra(no->palavra);
         no = no->prox;
     }
+}
+
+void desenharTelaInicial() {
+    DrawTexture(imagemTelaInicial, 0, 0, WHITE);
+}
+
+#define IMAGEM_TELA_INICIAL "assets/images/imagem_inicial.png"
+
+void carregarImagemTelaInicial() {
+    imagemTelaInicial = LoadTexture(IMAGEM_TELA_INICIAL);
+}
+
+void descarregarImagemTelaInicial() {
+    UnloadTexture(imagemTelaInicial);
 }
