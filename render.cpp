@@ -103,6 +103,23 @@ void desenharListaPalavras(lista_list::ListaLista &lista) {
     }
 }
 
+#define LARGURA 800
+#define ALTURA 450
+
+void desenharJanelaFimJogo() {
+    float larguraRet = 210;
+    float alturaRet = 75;
+    Vector2 medida;
+    Rectangle ret = {LARGURA/2 - larguraRet/2, ALTURA/2 - alturaRet/2, larguraRet, alturaRet};
+    DrawRectangleRounded(ret, 0.1f, 10, (Color){240, 220, 116, 255});
+    DrawRectangleRoundedLines(ret, 0.1, 10, (Color) {255, 223, 153, 255});
+    medida = MeasureTextEx(*(obterOpenSansSemiBold24()), "ENTER para continuar", 24.0f, 1.0f);
+    DrawTextEx(*(obterOpenSansSemiBold24()), "ENTER para continuar", (Vector2) {ret.x + ret.width/2 - medida.x/2, ret.y + alturaRet/8 + 4}, 24.0f, 1.0f, (Color) {7, 56, 62, 255});
+    float dy = medida.y;
+    medida = MeasureTextEx(*(obterOpenSansSemiBold24()), "ESC para sair", 24.0f, 1.0f);
+    DrawTextEx(*(obterOpenSansSemiBold24()), "ESC para sair", (Vector2) {ret.x + ret.width/2 - medida.x/2, ret.y + alturaRet/8 + 28.0f}, 24.0f, 1.0f, (Color) {7, 56, 62, 255});
+}
+
 void desenharLogotipo() {
     DrawTexture(imagemTelaInicial, 246, 0, WHITE);
 }

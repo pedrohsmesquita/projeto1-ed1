@@ -20,6 +20,8 @@ void desenharCronometro(const lista_grafica::ListaLetra &lista);
 
 void desenharPontuacao(const lista_grafica::ListaLetra &lista);
 
+void desenharJanelaFimJogo();
+
 void desenharListaPalavras(lista_list::ListaLista &lista);
 
 void desenharFundo();
