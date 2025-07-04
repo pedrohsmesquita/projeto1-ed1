@@ -2,6 +2,7 @@
 #include "palavras_lista.h"
 
 Texture2D imagemTelaInicial;
+Texture2D imagemFundo;
 
 void escurecerCor(const Color& corOriginal, Color& cor, float fatorEscurecer) {
     cor.r = corOriginal.r * fatorEscurecer;
@@ -102,16 +103,29 @@ void desenharListaPalavras(lista_list::ListaLista &lista) {
     }
 }
 
-void desenharTelaInicial() {
-    DrawTexture(imagemTelaInicial, 0, 0, WHITE);
+void desenharLogotipo() {
+    DrawTexture(imagemTelaInicial, 246, 0, WHITE);
 }
 
-#define IMAGEM_TELA_INICIAL "assets/images/imagem_inicial.png"
+void desenharFundo() {
+    DrawTexture(imagemFundo, 0, 0, (Color) {255, 255, 255, 192});
+}
 
-void carregarImagemTelaInicial() {
+#define IMAGEM_TELA_INICIAL "assets/images/logotipo_inicio.png"
+#define IMAGEM_FUNDO "assets/images/imagem_fundo.png"
+
+void carregarFundo() {
+    imagemFundo = LoadTexture(IMAGEM_FUNDO);
+}
+
+void descarregarFundo() {
+    UnloadTexture(imagemFundo);
+}
+
+void carregarLogotipo() {
     imagemTelaInicial = LoadTexture(IMAGEM_TELA_INICIAL);
 }
 
-void descarregarImagemTelaInicial() {
+void descarregarLogotipo() {
     UnloadTexture(imagemTelaInicial);
 }

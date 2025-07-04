@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include "interface.h"
 
+void desenharLetraContorno(const Texto& texto, float grossura);
+
 void desenharBotao(const CaixaTexto &ct, float grossura, float escurecer);
 
 void desenharLetraContorno(const Texto& texto, float grossura);
@@ -20,10 +22,16 @@ void desenharPontuacao(const lista_grafica::ListaLetra &lista);
 
 void desenharListaPalavras(lista_list::ListaLista &lista);
 
-void desenharTelaInicial();
+void desenharFundo();
 
-void carregarImagemTelaInicial();
+void carregarFundo();
 
-void descarregarImagemTelaInicial();
+void descarregarFundo();
+
+void desenharLogotipo();
+
+void carregarLogotipo();
+
+void descarregarLogotipo();
 
 #endif // RENDER_H
