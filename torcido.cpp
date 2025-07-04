@@ -84,6 +84,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
         }
         BeginDrawing();
         ClearBackground((Color) {7, 56, 62, 255});
+        desenharFundo();
         desenharCaixa(placeholders);
         desenharPalavraCaixa(entradaV);
         desenharPalavraCaixa(palavraSorteadaV);
@@ -92,6 +93,56 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
         desenharListaPalavras(listaPalavrasV);
         EndDrawing();
         janelaAtiva = !WindowShouldClose();
+    }
+}
+
+void inicializarCaixaSelecaoDicionario(CaixaTexto &ct1, CaixaTexto &ct2);
+void inicializarTexto(Texto &texto);
+
+#define LARGURA 800
+#define ALTURA 450
+
+Dicionario telaSelecaoDicionario(bool &janelaAtiva) {
+    CaixaTexto ct1, ct2;
+    Texto texto;
+    Mouse *mouse = obterMouse();
+    Dicionario selecionado = INVLD;
+
+    inicializarCaixaSelecaoDicionario(ct1, ct2);
+    inicializarTexto(texto);
+
+    while (janelaAtiva) {
+        switch (selecionado) {
+        case PORTUGUES:
+            return PORTUGUES;
+        case INGLES:
+            return INGLES;
+        default:
+            break;
+        }
+        if (janelaAtiva) {
+            ct1.caixa.mouseSobre = false; ct1.texto.mouseSobre = false;
+            ct2.caixa.mouseSobre = false; ct2.texto.mouseSobre = false;
+            lerMouse(*mouse);
+            if (CheckCollisionPointRec(mouse->posicao, ct1.caixa.retangulo)) {          // PROVISÓRIO
+                ct1.caixa.mouseSobre = true; ct1.texto.mouseSobre = true;
+                if (mouse->botaoEsqClick)
+                    mouse->opcaoSelecionada = ct1.id;
+            } else if (CheckCollisionPointRec(mouse->posicao, ct2.caixa.retangulo)) {   // PROVISÓRIO
+                ct2.caixa.mouseSobre = true; ct2.texto.mouseSobre = true;
+                if (mouse->botaoEsqClick)
+                    mouse->opcaoSelecionada = ct2.id;
+            }
+            selecionado = (Dicionario) mouse->opcaoSelecionada;
+            BeginDrawing();
+            ClearBackground((Color) {7, 56, 62, 255});
+            desenharFundo();
+            desenharLetraContorno(texto, 2.0f);
+            desenharBotao(ct1, 0.35f, 0.75f);
+            desenharBotao(ct2, 0.35f, 0.75f);
+            EndDrawing();
+            janelaAtiva = !WindowShouldClose();
+        }
     }
 }
 
@@ -218,4 +269,58 @@ void inicializarPalavraSorteada(string_lista::String &palavraSorteada, string_li
     lista_grafica::criarLista(palavraSorteadaV);
     string_lista::criarLista(palavraEmbaralhada);
     definirEstiloCabecaSorteada(palavraSorteadaV);
+}
+
+void inicializarCaixaSelecaoDicionario(CaixaTexto &ct1, CaixaTexto &ct2) {
+    Vector2 temp;
+    ct1.id = PORTUGUES;
+    ct1.texto.conteudo = "Portugues";
+    ct1.caixa.cor = (Color){240, 220, 116, 255};
+    ct1.caixa.corSobre = (Color) {255, 223, 153, 255};
+    ct1.caixa.mouseSobre = false;
+    ct1.caixa.redondeza = 0.3;
+    ct1.caixa.segmentos = 10;
+    ct1.caixa.retangulo = {
+        LARGURA/2 - 80.0f, ALTURA/2 - 60.0f,
+        160.0f, 60.0f
+    };
+
+    ct1.texto.cor = (Color) {7, 56, 62, 255};
+    ct1.texto.corSobre = (Color) {7, 56, 62, 255};
+    ct1.texto.espacamento = 2.0f;
+    ct1.texto.mouseSobre = false;
+    ct1.texto.tamanho = LETRA_ESCOLHIDA_TAM;
+    ct1.texto.fonte = obterOpenSansBold30();
+    temp = MeasureTextEx(*ct1.texto.fonte, ct1.texto.conteudo, ct1.texto.tamanho, ct1.texto.espacamento);
+    ct1.texto.posicao = {
+        ct1.caixa.retangulo.x + (ct1.caixa.retangulo.width - temp.x)/2,
+        ct1.caixa.retangulo.y + (ct1.caixa.retangulo.height - temp.y)/2
+    };
+
+    ct2.id = INGLES;
+    ct2.texto.conteudo = "Ingles";
+    ct2.caixa = ct1.caixa;
+    ct2.texto.cor = ct1.texto.cor;
+    ct2.texto.corSobre = ct1.texto.corSobre;
+    ct2.texto.espacamento = ct1.texto.espacamento;
+    ct2.texto.fonte = ct1.texto.fonte;
+    ct2.texto.mouseSobre = false;
+    ct2.texto.tamanho = ct1.texto.tamanho;
+    ct2.caixa.retangulo.y += ct1.caixa.retangulo.height + 45.0f;
+    temp = MeasureTextEx(*ct2.texto.fonte, ct2.texto.conteudo, ct2.texto.tamanho, ct2.texto.espacamento);
+    ct2.texto.posicao = {
+        ct2.caixa.retangulo.x + (ct2.caixa.retangulo.width - temp.x)/2,
+        ct2.caixa.retangulo.y + (ct2.caixa.retangulo.height - temp.y)/2
+    };
+}
+
+void inicializarTexto(Texto &texto) {
+    texto.conteudo = " ESCOLHA O\nDICIONARIO";
+    texto.cor = (Color){240, 220, 116, 255};
+    texto.espacamento = 1.0f;
+    texto.fonte = obterOpenSansBold48();
+    texto.tamanho = LETRA_BOTOES_TAM;
+    texto.mouseSobre = false;
+    Vector2 medida = MeasureTextEx(*texto.fonte, texto.conteudo, texto.tamanho, texto.espacamento);
+    texto.posicao = {LARGURA/2 - medida.x/2, medida.y/4};
 }
