@@ -33,7 +33,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     Mouse *mouse = obterMouse();
     TecladoStatus tecladoStatus;
     float tempoPassado = 0.0f;
-    int tempoRestante = 1, pontuacao = 0;
+    int tempoRestante = 60, pontuacao = 0;
     bool sucesso, esc, enter, resetar;
 
     // Entrada do usuário, palavra sorteada e plaveholders
@@ -53,7 +53,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
         sucesso = false; esc = false; enter = false; resetar = false;
         if (tempoRestante == 0) {
             if (IsKeyPressed(KEY_ENTER)) {
-                tempoRestante = 15;
+                tempoRestante = 60;
                 pontuacao = 0;
                 resetar = true;
                 processarPontuacao(pontuacao, pontuacaoS, pontuacaoV);
@@ -90,7 +90,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
             lista_grafica::utils::deletar(placeholders);
             lista_grafica::utils::inserirString(palavraSorteadaV, palavraSorteada, 3.0f);
             letrasPlaceholders(palavraSorteadaV, placeholders);
-            tempoRestante = 15;
+            tempoRestante = 60;
             tempoPassado = 0.0f;
             processarTemporizado(tempoRestante, tempoPassado, tempoS, tempoV);
         }
