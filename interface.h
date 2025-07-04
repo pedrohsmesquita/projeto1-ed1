@@ -12,6 +12,7 @@
 #define ESPACAMENTO_LETRAS 4
 #define LETRA_ESCOLHIDA_TAM 30.0f
 #define LETRA_DIGITADA_TAM 24.0f
+#define LETRA_BOTOES_TAM 48.0f
 
 struct Fontes {
     Font openSansBold48;

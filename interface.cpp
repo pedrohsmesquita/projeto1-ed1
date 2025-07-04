@@ -217,7 +217,7 @@ namespace lista_list {
 Fontes fontes;
 
 void carregarFontes() {
-    fontes.openSansBold48 = LoadFontEx(OPENSANS_BOLD, 48, NULL, 0);
+    fontes.openSansBold48 = LoadFontEx(OPENSANS_BOLD, LETRA_BOTOES_TAM, NULL, 0);
     fontes.openSansBold30 = LoadFontEx(OPENSANS_BOLD, LETRA_ESCOLHIDA_TAM, NULL, 0);
     fontes.openSansSemiBold18 = LoadFontEx(OPENSANS_SEMIBOLD, 18.0f, NULL, 0);
     fontes.openSansSemiBold24 = LoadFontEx(OPENSANS_SEMIBOLD, LETRA_DIGITADA_TAM, NULL, 0);
