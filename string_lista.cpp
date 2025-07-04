@@ -83,11 +83,11 @@ namespace string_lista {
 
             criarLista(linha);
             while (arquivo.get(c) && c != '\n') {
-                if (c == '-') {
+                if (c == '-' || c == '\'') {
                     linha.primeiro->val = 0;
                     break;
                 }
-                string_lista::insereFinal(linha, c);
+                string_lista::insereFinal(linha, toupper(c));
             }
             return linha;
         }
