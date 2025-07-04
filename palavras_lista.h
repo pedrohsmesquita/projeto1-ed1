@@ -25,6 +25,28 @@ namespace palavra_lista {
 
     namespace utils {
         void inserePalavra(ListaPalavra &lista, string_lista::String &palavra);
+
+        /**
+         * Deleta os nós de ListaPalavra (NodoPalavra), mas sem ousar deletar a
+         * String do membro "palavra" e nem deletar a cabeça.
+         */
+        void deletar(ListaPalavra &lista);
+
+        /**
+         * Deleta (destrói) o conteúdo da String de cada nó de ListaPalavra.
+         */
+        void deletarConteudo(ListaPalavra &lista);
+
+        /**
+         * Deleta o conteúdo da String de cada nó de ListaPalavra e também
+         * destrói ListaPalavra.
+         */
+        void destruicaoProfunda(ListaPalavra &lista);
+
+        /**
+         * Deleta os nós de ListaPalavra (NodoPalavra) e também a sua cabeça.
+         */
+        void destruir(ListaPalavra &lista);
     }
 }
 
@@ -51,6 +73,15 @@ namespace tbl_indxd {
         void escolherPalavra(TabelaIndexada &tabela, string_lista::String &palavra);
 
         void indexarTabela(TabelaIndexada &tabela, palavra_lista::ListaPalavra &listaPalavra);
+
+        /**
+         * Deleta todos todos os nós de ListaPalavra dentro do SegundoIndice.
+         */
+        void deletarConteudoTabela(TabelaIndexada &tabela);
+        /**
+         * Destrói toda a TabelaIndexada, tanto SegundoIndice como o PrimeiroIndice.
+         */
+        void destruir(TabelaIndexada &tabela);
     }
 }
 /*

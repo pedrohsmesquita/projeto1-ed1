@@ -90,6 +90,16 @@ namespace lista_grafica {
         delete aux;
     }
 
+    void removeInicio(ListaCaixa &lista) {
+        if (vazia(lista))
+            return;
+        NodoCaixa *p = lista.primeiro->prox;
+        lista.primeiro->prox = p->prox;
+        if (lista.primeiro->prox == NULL)
+            lista.ultimo = lista.primeiro;
+        delete p;
+    }
+
     namespace utils {
         void inserirString(ListaLetra &lista, string_lista::String &listaS, float espaco) {
             string_lista::NodoString *no = listaS.primeiro->prox;
@@ -122,7 +132,17 @@ namespace lista_grafica {
 
         void deletar(ListaCaixa &lista) {
             while (!vazia(lista))
-                removeFinal(lista);
+                removeInicio(lista);
+        }
+
+        void destruir(ListaLetra &lista) {
+            deletar(lista);
+            delete lista.primeiro;
+        }
+
+        void destruir(ListaCaixa &lista) {
+            deletar(lista);
+            delete lista.primeiro;
         }
 
         void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando, float espaco) {
@@ -191,6 +211,20 @@ namespace lista_list {
         lista.ultimo = p;
     }
 
+    bool vazia(ListaLista &lista) {
+        return lista.primeiro == lista.ultimo;
+    }
+
+    void removeInicio(ListaLista &lista) {
+        if (vazia(lista))
+            return;
+        NodoLista *aux = lista.primeiro->prox;
+        lista.primeiro->prox = aux->prox;
+        if (lista.primeiro->prox == NULL)
+            lista.ultimo = lista.primeiro;
+        delete aux;
+    }
+
     namespace utils {
         void inserePalavra(ListaLista &lista, palavra_lista::ListaPalavra &palavra) {
             NodoLista *ant = lista.ultimo;
@@ -207,6 +241,26 @@ namespace lista_list {
                 estilo.posicao.y += 16.0f;
             }
             lista_grafica::utils::estilizarLista(lista.ultimo->palavra, estilo);
+        }
+
+        void deletarConteudo(ListaLista &lista) {
+            NodoLista *no = lista.primeiro->prox;
+
+            while (no != NULL) {
+                lista_grafica::utils::destruir(no->palavra);
+                no = no->prox;
+            }
+        }
+
+        void deletar(ListaLista &lista) {
+            deletarConteudo(lista);
+            while (!vazia(lista))
+                removeInicio(lista);
+        }
+
+        void destruir(ListaLista &lista) {
+            deletar(lista);
+            delete lista.primeiro;
         }
     }
 }

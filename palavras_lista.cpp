@@ -33,12 +33,47 @@ namespace palavra_lista {
         delete aux;
     }
 
+    void removeInicio(ListaPalavra &lista) {
+        if (vazia(lista))
+            return;
+        NodoPalavra *aux = lista.primeiro->prox;
+        lista.primeiro->prox = aux->prox;
+        if (lista.primeiro->prox == NULL)
+            lista.ultimo = lista.primeiro;
+        delete aux;
+    }
+
     namespace utils {
         void inserePalavra(ListaPalavra &lista, string_lista::String &palavra) {
             string_lista::String copia;
             string_lista::criarLista(copia);
             string_lista::utils::strcpy(copia, palavra);
             insereFinal(lista, copia);
+        }
+
+        void deletar(ListaPalavra &lista) {
+            while (!vazia(lista))
+                removeInicio(lista);
+        }
+
+        void deletarConteudo(ListaPalavra &lista) {
+            NodoPalavra *no = lista.primeiro->prox;
+
+            while (no != NULL) {
+                string_lista::utils::destruir(no->palavra);
+                no = no->prox;
+            }
+        }
+
+        void destruicaoProfunda(ListaPalavra &lista) {
+            deletarConteudo(lista);
+            destruir(lista);
+        }
+
+
+        void destruir(ListaPalavra &lista) {
+            deletar(lista);
+            delete lista.primeiro;
         }
     }
 }
@@ -160,6 +195,41 @@ namespace tbl_indxd {
                 palavra_lista::ListaPalavra *listaPlvr = buscaListaPalavra(indice2, no->palavra);
                 palavra_lista::insereFinal(*listaPlvr, no->palavra);
                 no = no->prox;
+            }
+        }
+
+        void deletarConteudoSegundoIndice(PrimeiroIndice &indice1) {
+            SegundoIndice *indice = &indice1.celula;
+
+            while (indice != NULL) {
+                palavra_lista::utils::deletar(indice->lista);
+                indice = indice->prox;
+            }
+        }
+
+        void deletarConteudoTabela(TabelaIndexada &tabela) {
+            PrimeiroIndice *indice1 = tabela.dados;
+
+            while (indice1 != NULL) {
+                deletarConteudoSegundoIndice(*indice1);
+                indice1 = indice1->prox;
+            }
+        }
+
+        void destruir(TabelaIndexada &tabela) {
+            deletarConteudoTabela(tabela);
+            PrimeiroIndice *indice1 = tabela.dados;
+
+            while (indice1 != NULL) {
+                SegundoIndice *indice2 = indice1->celula.prox;
+                while (indice2 != NULL) {
+                    SegundoIndice *aux = indice2->prox;
+                    delete indice2;
+                    indice2 = aux;
+                }
+                PrimeiroIndice *aux = indice1->prox;
+                delete indice1;
+                indice1 = aux->prox;
             }
         }
     }

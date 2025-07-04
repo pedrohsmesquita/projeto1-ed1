@@ -26,8 +26,6 @@ int main(void) {
 
     tbl_indxd::criarTabela(tabela);
     palavra_lista::criarLista(dicionario);
-    //carregarDicionario("portugues.txt", dicionario);
-    //tbl_indxd::utils::indexarTabela(tabela, dicionario);
 
     SetConfigFlags (FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(LARGURA, ALTURA, "Torcido");
@@ -49,9 +47,14 @@ int main(void) {
         switch (opcao) {
         case JOGAR:
             opcaoDicionario = telaSelecaoDicionario(janelaAtiva);
-            carregarDicionario(opcaoDicionario, dicionario);
-            tbl_indxd::utils::indexarTabela(tabela, dicionario);
-            telaJogo(janelaAtiva, tabela);
+            if (opcaoDicionario != INVLD) {
+                carregarDicionario(opcaoDicionario, dicionario);
+                tbl_indxd::utils::indexarTabela(tabela, dicionario);
+                telaJogo(janelaAtiva, tabela);
+                palavra_lista::utils::deletarConteudo(dicionario);
+                palavra_lista::utils::deletar(dicionario);
+                tbl_indxd::utils::deletarConteudoTabela(tabela);
+            }
             opcao = INVALIDO;
             break;
         case AJUDA:
@@ -92,33 +95,13 @@ int main(void) {
         }
     }
 
+    tbl_indxd::utils::destruir(tabela);
     descarregarLogotipo();
     descarregarFundo();
     CloseWindow();
 
     return 0;
 }
-
-/*
-void inicializarCaixaTexto(CaixaTexto &ct) {
-    ct.caixa.cor = (Color){240, 220, 116, 255};
-    ct.caixa.corSobre = (Color) {255, 223, 153, 255};
-    ct.caixa.mouseSobre = false;
-    ct.caixa.redondeza = 0.3;
-    ct.caixa.segmentos = 10;
-    ct.caixa.retangulo = {
-        LARGURA/2 - 80.0f, ALTURA/2 - 30.0f,
-        160.0f, 60.0f
-    };
-
-    ct.texto.cor = (Color) {7, 56, 62, 255};
-    ct.texto.corSobre = (Color) {7, 56, 62, 255};
-    ct.texto.espacamento = 2.0f;
-    ct.texto.mouseSobre = false;
-    ct.texto.tamanho = 48.0f;
-    ct.texto.fonte = obterOpenSansBold48();
-}
-*/
 
 void inicializarCaixaTexto(CaixaTexto &ct1, CaixaTexto &ct2, CaixaTexto &ct3) {
     Vector2 temp;
@@ -186,12 +169,11 @@ void carregarDicionario(Dicionario opcao,  palavra_lista::ListaPalavra &lista) {
         arquivo.open("portugues.txt");
     else
         arquivo.open("ingles.txt");
-
     while (!arquivo.eof()) {
         linha = string_lista::utils::lerLinha(arquivo);
         if (linha.primeiro->val >= 3)
             palavra_lista::insereFinal(lista, linha);
-        else string_lista::utils::deletar(linha);
+        else string_lista::utils::destruir(linha);
     }
     arquivo.close();
 }

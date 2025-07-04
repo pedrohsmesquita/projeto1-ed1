@@ -98,8 +98,12 @@ namespace string_lista {
         void deletar(String &linha) {
             while (!vazia(linha))
                 removeFinal(linha);
-            linha.ultimo = linha.primeiro;
             linha.primeiro->val = 0;
+        }
+
+        void destruir(String &lista) {
+            deletar(lista);
+            delete lista.primeiro;
         }
 
         void strcpy(String &dest, String &orig) {

@@ -49,6 +49,10 @@ namespace string_lista {
          * Deleta toda a String, deixando apenas a cabeça da String.
          */
         void deletar(String &valStr);
+        /**
+         * Deleta toda a String, incluindo a cabeça.
+         */
+        void destruir(String &lista);
 
         void strcpy(String &dest, String &orig);
 

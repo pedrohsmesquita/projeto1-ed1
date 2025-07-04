@@ -119,9 +119,25 @@ namespace lista_grafica {
 
         void inserirStringEstililizada(ListaLetra &lista, string_lista::String &listaS);
 
+        /**
+         * Deleta todos os nós de ListaLetra (NodoLetra), sem remover a cabeça.
+         */
         void deletar(ListaLetra &lista);
 
+        /**
+         * Deleta todos os nós de ListaCaixa (NodoCaixa), sem remover a cabeça.
+         */
         void deletar(ListaCaixa &lista);
+
+        /**
+         * Deleta todos os nós de ListaLetra (NodoLetra) e também remove a cabeça.
+         */
+        void destruir(ListaLetra &lista);
+
+        /**
+         * Deleta todos os nós de ListaCaixa (NodoCaixa) e também remove a cabeça.
+         */
+        void destruir(ListaCaixa &lista);
 
         void inserirLetra(ListaLetra &lista, string_lista::NodoString *letra, bool animando, float espaco);
 
@@ -146,6 +162,16 @@ namespace lista_list {
 
     namespace utils {
         void inserePalavra(ListaLista &lista, palavra_lista::ListaPalavra &palavra);
+
+        /**
+         * Deleta o conteúdo e todos os nós de ListaLista (NodoLista).
+         */
+        void deletar(ListaLista &lista);
+
+        /**
+         * Deleta o conteúdo e todos os nós de ListaLista (NodoLista), incluindo a cabeça.
+         */
+        void destruir(ListaLista &lista);
     }
 }
 
