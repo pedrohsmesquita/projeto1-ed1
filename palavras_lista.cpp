@@ -51,6 +51,19 @@ namespace palavra_lista {
             insereFinal(lista, copia);
         }
 
+        void salvarEmDisco(ListaPalavra &lista) {
+            NodoPalavra *no = lista.primeiro->prox;
+            std::ofstream arquivo;
+
+            arquivo.open("acertos.txt");
+
+            while (no != NULL) {
+                string_lista::utils::salvarLinha(no->palavra, arquivo);
+                no = no->prox;
+            }
+            arquivo.close();
+        }
+
         void deletar(ListaPalavra &lista) {
             while (!vazia(lista))
                 removeInicio(lista);

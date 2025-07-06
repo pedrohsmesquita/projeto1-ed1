@@ -26,6 +26,8 @@ namespace palavra_lista {
     namespace utils {
         void inserePalavra(ListaPalavra &lista, string_lista::String &palavra);
 
+        void salvarEmDisco(ListaPalavra &lista);
+
         /**
          * Deleta os nós de ListaPalavra (NodoPalavra), mas sem ousar deletar a
          * String do membro "palavra" e nem deletar a cabeça.
@@ -84,38 +86,5 @@ namespace tbl_indxd {
         void destruir(TabelaIndexada &tabela);
     }
 }
-/*
-namespace dicionario {
-    struct ListaInterna {
-        palavra_lista::ListaPalavra lista;
-        ListaInterna *prox;
-    };
-
-    struct ListaExterna {
-        ListaInterna listaI;
-        ListaExterna *prox;
-    };
-
-    void inicializarListaInterna(ListaInterna &lista);
-
-    void inicializarListaExterna(ListaExterna &lista);
-
-    namespace utils {
-
-        ListaInterna *buscaIndiceAlfabetico(ListaExterna *listaPtr, string_lista::String &palavra);
-
-
-        palavra_lista::ListaPalavra *buscaIndiceAlfabetico(ListaInterna *listaPtr, string_lista::String &palavra);
-
-        void inserirPalavra(ListaExterna &listaE, string_lista::String &palavra);
-
-        void imprimir(ListaExterna *lista);
-
-        bool palavraInseridaExiste(string_lista::String &entrada, ListaExterna *listaPtr); // passo a palavra inserida e a lista externa (que contem a letra inicial de cada palavra da lista)
-
-        void escolherPalavra(dicionario::ListaExterna *lista, string_lista::String &palavra);
-    }
-}
-*/
 
 #endif // PALAVRAS_LISTA_H
