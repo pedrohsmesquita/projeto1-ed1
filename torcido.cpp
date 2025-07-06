@@ -21,7 +21,7 @@ void escolherPalavra(string_lista::String &palavra, string_lista::String &embara
 void processarGraficosEntrada(lista_grafica::ListaLetra &lista, TecladoStatus &status);
 void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista::String &tempoS, lista_grafica::ListaLetra &tempoV);
 void processarPontuacao(int pontuacao, string_lista::String &pontuacaoS, lista_grafica::ListaLetra &pontuacaoV);
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela);
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista);
 void botaoContinuarSair(bool &janelaAtiva);
 
 void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
@@ -33,7 +33,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     Mouse *mouse = obterMouse();
     TecladoStatus tecladoStatus;
     float tempoPassado = 0.0f;
-    int tempoRestante = 5, pontuacao = 0;
+    int tempoRestante = 60, pontuacao = 0;
     bool sucesso, esc, enter, resetar, salvo = false;
 
     // Entrada do usuário, palavra sorteada e plaveholders
@@ -74,7 +74,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
             processarGraficosEntrada(entradaV, tecladoStatus);
             processarTemporizado(tempoRestante, tempoPassado, tempoS, tempoV);
             if (entrada.primeiro->val >= 3 && IsKeyPressed(KEY_ENTER)) {
-                Resultado resultado = validarPalavra(entrada, palavraSorteada, tabela);
+                Resultado resultado = validarPalavra(entrada, palavraSorteada, tabela, listaPalavras);
                 if (resultado == INVALIDA) {
                     string_lista::utils::deletar(entrada);
                     lista_grafica::utils::deletar(entradaV);
@@ -227,9 +227,11 @@ void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista:
     }
 }
 
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela) {
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista) {
     using namespace string_lista::utils;
     if (!LetrasContidasNaPalavra(entrada, palavraEscolhida))
+        return INVALIDA;
+    if (palavra_lista::pesquisa(lista, entrada))
         return INVALIDA;
     if (comparaString(entrada, palavraEscolhida))
         return ACERTOU;
