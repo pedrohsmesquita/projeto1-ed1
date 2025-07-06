@@ -129,6 +129,8 @@ void desenharJanelaFimJogo() {
     float dy = medida.y;
     medida = MeasureTextEx(*(obterOpenSansSemiBold24()), "ESC para sair", 24.0f, 1.0f);
     DrawTextEx(*(obterOpenSansSemiBold24()), "ESC para sair", (Vector2) {ret.x + ret.width/2 - medida.x/2, ret.y + alturaRet/8 + 28.0f}, 24.0f, 1.0f, (Color) {7, 56, 62, 255});
+    medida = MeasureTextEx(*(obterOpenSansSemiBold24()), "Suas palavras digitadas foram salvas em \'acertos.txt\'.", 24.0f, 1.0f);
+    DrawTextEx(*(obterOpenSansSemiBold24()), "Suas palavras digitadas foram salvas em \'acertos.txt\'.", (Vector2) {LARGURA_TELA/2 - medida.x/2, 1.0f}, 24.0f, 1.0f, GREEN);
 }
 
 void desenharLogotipo() {

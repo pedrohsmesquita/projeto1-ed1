@@ -33,8 +33,8 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     Mouse *mouse = obterMouse();
     TecladoStatus tecladoStatus;
     float tempoPassado = 0.0f;
-    int tempoRestante = 60, pontuacao = 0;
-    bool sucesso, esc, enter, resetar;
+    int tempoRestante = 5, pontuacao = 0;
+    bool sucesso, esc, enter, resetar, salvo = false;
 
     // Entrada do usuário, palavra sorteada e plaveholders
     inicializarPalavraSorteada(palavraSorteada, palavraEmbaralhada, palavraSorteadaV);
@@ -52,10 +52,15 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     while (janelaAtiva) {
         sucesso = false; esc = false; enter = false; resetar = false;
         if (tempoRestante == 0) {
+            if (!salvo) {
+                salvo = true;
+                palavra_lista::utils::salvarEmDisco(listaPalavras);
+            }
             if (IsKeyPressed(KEY_ENTER)) {
                 tempoRestante = 60;
                 pontuacao = 0;
                 resetar = true;
+                salvo = false;
                 processarPontuacao(pontuacao, pontuacaoS, pontuacaoV);
                 palavra_lista::utils::deletarConteudo(listaPalavras);
                 palavra_lista::utils::deletar(listaPalavras);
