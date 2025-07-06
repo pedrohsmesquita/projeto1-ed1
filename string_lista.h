@@ -45,6 +45,8 @@ namespace string_lista {
          */
         string_lista::String lerLinha(std::ifstream &arquivo);
 
+        void salvarLinha(String &lista, std::ofstream &arquivo);
+
         /**
          * Deleta toda a String, deixando apenas a cabeça da String.
          */

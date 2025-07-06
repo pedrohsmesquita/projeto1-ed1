@@ -92,6 +92,16 @@ namespace string_lista {
             return linha;
         }
 
+        void salvarLinha(String &lista, std::ofstream &arquivo) {
+            NodoString *no = lista.primeiro->prox;
+
+            while (no != NULL) {
+                arquivo << no->val;
+                no = no->prox;
+            }
+            arquivo << '\n';
+        }
+
         /**
          * Deleta toda a String, deixando apenas a cabeça da String.
          */
