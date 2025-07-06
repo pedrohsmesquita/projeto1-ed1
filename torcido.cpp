@@ -262,10 +262,10 @@ void inicializarListaEntradas(lista_list::ListaLista &listaV) {
     lista_grafica::criarLista(listaV.primeiro->palavra);
     lista_grafica::LetraEstilo estilo;
 
-    estilo.cor = WHITE;
+    estilo.cor = (Color) {7, 56, 62, 255};
     estilo.fonte = obterOpenSansSemiBold18();
     estilo.tamanho = 18.0f;
-    estilo.posicao = {LARGURA_TELA - 200.0f, 1.0f};
+    estilo.posicao = {LARGURA_TELA - 200.0f, ALTURA_TELA/2 - 144.0f};
     listaV.primeiro->palavra.primeiro->info.estilo = estilo;
 }
 

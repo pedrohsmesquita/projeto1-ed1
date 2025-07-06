@@ -52,7 +52,6 @@ void desenharPalavra(const lista_grafica::ListaLetra &listaV) {
     lista_grafica::NodoLetra *no = listaV.primeiro->prox;
 
     while (no != NULL) {
-        float x = no->info.estilo.posicao.x;
         DrawTextCodepoint(*(no->info.estilo.fonte), no->info.letra->val,
                           no->info.estilo.posicao, no->info.estilo.tamanho, no->info.estilo.cor);
         no = no->prox;
@@ -95,11 +94,23 @@ void desenharCaixa(const lista_grafica::ListaCaixa &lista) {
 }
 
 void desenharListaPalavras(lista_list::ListaLista &lista) {
-    lista_list::NodoLista *no = lista.primeiro;
+    lista_list::NodoLista *no = lista.primeiro->prox, *ant = NULL;
+    Rectangle ret = {LARGURA_TELA - 210.0f, ALTURA_TELA/2 - 154.0f,
+                    180.0f, 233.0f};
+    int i = 0;
 
-    while (no != NULL) {
+    DrawRectangleRounded(ret, 0.15, 10, (Color){240, 220, 116, 255});
+    while (no != NULL && i < 12) {
         desenharPalavra(no->palavra);
+        ant = no;
         no = no->prox;
+        i++;
+    }
+    if (i == 12) {
+        Vector2 pos = {ant->palavra.primeiro->prox->info.estilo.posicao.x, ant->palavra.primeiro->prox->info.estilo.posicao.y + 16.0f};
+        DrawTextEx(*ant->palavra.primeiro->prox->info.estilo.fonte, "...",
+                   pos, ant->palavra.primeiro->prox->info.estilo.tamanho, 1.0f,
+                   ant->palavra.primeiro->prox->info.estilo.cor);
     }
 }
 
