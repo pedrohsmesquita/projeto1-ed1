@@ -12,6 +12,6 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela);
 
 Dicionario telaSelecaoDicionario(bool &janelaAtiva);
 
-void telaAjuda();
+void telaAjuda(bool &janelaAtiva);
 
 #endif // TORCIDO_H

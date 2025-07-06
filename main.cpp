@@ -58,7 +58,7 @@ int main(void) {
             opcao = INVALIDO;
             break;
         case AJUDA:
-            telaAjuda();
+            telaAjuda(janelaAtiva);
             opcao = INVALIDO;
             break;
         case SAIR:

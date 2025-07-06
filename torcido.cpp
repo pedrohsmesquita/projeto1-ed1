@@ -158,6 +158,8 @@ Dicionario telaSelecaoDicionario(bool &janelaAtiva) {
             break;
         }
         if (janelaAtiva) {
+            if (IsKeyPressed(KEY_ESCAPE))
+                return INVLD;
             ct1.caixa.mouseSobre = false; ct1.texto.mouseSobre = false;
             ct2.caixa.mouseSobre = false; ct2.texto.mouseSobre = false;
             lerMouse(*mouse);
@@ -184,8 +186,63 @@ Dicionario telaSelecaoDicionario(bool &janelaAtiva) {
     return INVLD;
 }
 
-void telaAjuda() {
+void telaAjuda(bool &janelaAtiva) {
     Mouse *mouse = obterMouse();
+    CaixaTexto ct1;
+    float y = 40.0f;
+    Rectangle ret = {95.0f, 25.0f + y, 610.0f, 270.0f};
+
+    Vector2 temp;
+    ct1.id = PORTUGUES;
+    ct1.texto.conteudo = "VOLTAR";
+    ct1.caixa.cor = (Color){240, 220, 116, 255};
+    ct1.caixa.corSobre = (Color) {255, 223, 153, 255};
+    ct1.caixa.mouseSobre = false;
+    ct1.caixa.redondeza = 0.3;
+    ct1.caixa.segmentos = 10;
+    ct1.caixa.retangulo = {
+        95.0f, 400.0f - 25,
+        120.0f, 50.0f
+    };
+
+    ct1.texto.cor = (Color) {7, 56, 62, 255};
+    ct1.texto.corSobre = (Color) {7, 56, 62, 255};
+    ct1.texto.espacamento = 2.0f;
+    ct1.texto.mouseSobre = false;
+    ct1.texto.tamanho = LETRA_ESCOLHIDA_TAM;
+    ct1.texto.fonte = obterOpenSansBold30();
+    temp = MeasureTextEx(*ct1.texto.fonte, ct1.texto.conteudo, ct1.texto.tamanho, ct1.texto.espacamento);
+    ct1.texto.posicao = {
+        ct1.caixa.retangulo.x + (ct1.caixa.retangulo.width - temp.x)/2,
+        ct1.caixa.retangulo.y + (ct1.caixa.retangulo.height - temp.y)/2
+    };
+
+    while (janelaAtiva)
+    {
+        ct1.caixa.mouseSobre = false; ct1.texto.mouseSobre = false;
+        if (IsKeyPressed(KEY_ESCAPE))
+            break;
+        lerMouse(*mouse);
+        if (CheckCollisionPointRec(mouse->posicao, ct1.caixa.retangulo)) {          // PROVISÓRIO
+            ct1.caixa.mouseSobre = true; ct1.texto.mouseSobre = true;
+            if (mouse->botaoEsqClick)
+                break;
+        }
+        BeginDrawing();
+        ClearBackground((Color) {7, 56, 62, 255});
+        desenharFundo();
+        DrawRectangleRounded(ret, 0.10, 10, (Color){240, 220, 116, 255});
+        DrawTextEx(*obterOpenSansBold48(),"AJUDA", (Vector2) {105.0f, 30.0f + y}, 50.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansBold30(),"OBJETIVO:", (Vector2) {100.0f, 80.0f + y}, 30.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(),"ENCONTRAR A PALAVRA QUE DEU ORIGEM", (Vector2) {100.0f, 130.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "AO ARRANJO DE LETRAS.", (Vector2) {100.0f, 150.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansBold30(), "COMO JOGAR:", (Vector2) {100.0f, 180.0f + y}, 30.f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "UTILIZE AS TECLAS ALFABETICAS PARA DIGITAR A PALAVRA.", (Vector2) {100.0f, 230.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "PARA SUBMETE-LA, APERTE ENTER.", (Vector2) {100.0f, 250.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        desenharBotao(ct1, 0.35f, 0.75f);
+        EndDrawing();
+        janelaAtiva = !WindowShouldClose();
+    }
 }
 
 void escolherPalavra(string_lista::String &palavra, string_lista::String &embaralhada, tbl_indxd::TabelaIndexada &tabela) {
