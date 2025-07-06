@@ -39,7 +39,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     // Entrada do usuário, palavra sorteada e plaveholders
     inicializarPalavraSorteada(palavraSorteada, palavraEmbaralhada, palavraSorteadaV);
     escolherPalavra(palavraSorteada, palavraEmbaralhada, tabela);
-    lista_grafica::utils::inserirString(palavraSorteadaV, palavraSorteada, 3.0f);
+    lista_grafica::utils::inserirString(palavraSorteadaV, palavraEmbaralhada, 3.0f);
     lista_grafica::criarLista(placeholders);
     letrasPlaceholders(palavraSorteadaV, placeholders);
     inicializarListaEntradas(listaPalavrasV);
@@ -93,7 +93,7 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
             escolherPalavra(palavraSorteada, palavraEmbaralhada, tabela);
             lista_grafica::utils::deletar(palavraSorteadaV);
             lista_grafica::utils::deletar(placeholders);
-            lista_grafica::utils::inserirString(palavraSorteadaV, palavraSorteada, 3.0f);
+            lista_grafica::utils::inserirString(palavraSorteadaV, palavraEmbaralhada, 3.0f);
             letrasPlaceholders(palavraSorteadaV, placeholders);
             tempoRestante = 60;
             tempoPassado = 0.0f;
