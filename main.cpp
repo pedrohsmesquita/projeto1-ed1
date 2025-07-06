@@ -171,7 +171,7 @@ void carregarDicionario(Dicionario opcao,  palavra_lista::ListaPalavra &lista) {
         arquivo.open("ingles.txt");
     while (!arquivo.eof()) {
         linha = string_lista::utils::lerLinha(arquivo);
-        if (linha.primeiro->val >= 3)
+        if (linha.primeiro->val >= 3 && linha.primeiro->val <= 15)
             palavra_lista::insereFinal(lista, linha);
         else string_lista::utils::destruir(linha);
     }

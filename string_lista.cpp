@@ -84,6 +84,9 @@ namespace string_lista {
             criarLista(linha);
             while (arquivo.get(c) && c != '\n') {
                 if (c == '-' || c == '\'') {
+                    // Termina de ler o resto da linha;
+                    while (arquivo.get(c) && c != '\n')
+                        ;
                     linha.primeiro->val = 0;
                     break;
                 }
