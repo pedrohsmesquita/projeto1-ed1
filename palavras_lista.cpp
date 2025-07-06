@@ -43,6 +43,18 @@ namespace palavra_lista {
         delete aux;
     }
 
+    bool pesquisa(ListaPalavra &lista, string_lista::String &listaS) {
+        NodoPalavra *no = lista.primeiro->prox;
+
+        while (no != NULL) {
+            if (string_lista::utils::comparaString(no->palavra, listaS))
+                return true;
+            no = no->prox;
+        }
+
+        return false;
+    }
+
     namespace utils {
         void inserePalavra(ListaPalavra &lista, string_lista::String &palavra) {
             string_lista::String copia;

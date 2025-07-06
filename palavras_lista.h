@@ -23,6 +23,8 @@ namespace palavra_lista {
 
     void removeFinal(ListaPalavra &lista);
 
+    bool pesquisa(ListaPalavra &lista, string_lista::String &listaS);
+
     namespace utils {
         void inserePalavra(ListaPalavra &lista, string_lista::String &palavra);
 
