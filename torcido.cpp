@@ -233,12 +233,12 @@ void telaAjuda(bool &janelaAtiva) {
         desenharFundo();
         DrawRectangleRounded(ret, 0.10, 10, (Color){240, 220, 116, 255});
         DrawTextEx(*obterOpenSansBold48(),"AJUDA", (Vector2) {105.0f, 30.0f + y}, 50.0f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansBold30(),"OBJETIVO:", (Vector2) {100.0f, 80.0f + y}, 30.0f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansSemiBold24(),"ENCONTRAR A PALAVRA QUE DEU ORIGEM", (Vector2) {100.0f, 130.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansSemiBold24(), "AO ARRANJO DE LETRAS.", (Vector2) {100.0f, 150.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansBold30(), "COMO JOGAR:", (Vector2) {100.0f, 180.0f + y}, 30.f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansSemiBold24(), "UTILIZE AS TECLAS ALFABETICAS PARA DIGITAR A PALAVRA.", (Vector2) {100.0f, 230.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
-        DrawTextEx(*obterOpenSansSemiBold24(), "PARA SUBMETE-LA, APERTE ENTER.", (Vector2) {100.0f, 250.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansBold30(),"OBJETIVO:", (Vector2) {115.0f, 80.0f + y}, 30.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(),"ENCONTRAR A PALAVRA QUE DEU ORIGEM", (Vector2) {115.0f, 130.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "AO ARRANJO DE LETRAS.", (Vector2) {115.0f, 150.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansBold30(), "COMO JOGAR:", (Vector2) {115.0f, 180.0f + y}, 30.f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "UTILIZE AS TECLAS ALFABETICAS PARA DIGITAR A PALAVRA.", (Vector2) {115.0f, 230.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
+        DrawTextEx(*obterOpenSansSemiBold24(), "PARA SUBMETE-LA, APERTE ENTER.", (Vector2) {115.0f, 250.0f + y}, 24.0f, 1.0f, {7, 56, 62, 255});
         desenharBotao(ct1, 0.35f, 0.75f);
         EndDrawing();
         janelaAtiva = !WindowShouldClose();
