@@ -55,13 +55,15 @@ namespace palavra_lista {
 }
 
 namespace tbl_indxd {
+    /*
     struct SegundoIndice {
         palavra_lista::ListaPalavra lista;
         SegundoIndice *prox;
     };
+    */
 
     struct PrimeiroIndice {
-        SegundoIndice celula;
+        palavra_lista::NodoPalavra *celula;
         PrimeiroIndice *prox;
     };
 
@@ -78,10 +80,6 @@ namespace tbl_indxd {
 
         void indexarTabela(TabelaIndexada &tabela, palavra_lista::ListaPalavra &listaPalavra);
 
-        /**
-         * Deleta todos todos os nós de ListaPalavra dentro do SegundoIndice.
-         */
-        void deletarConteudoTabela(TabelaIndexada &tabela);
         /**
          * Destrói toda a TabelaIndexada, tanto SegundoIndice como o PrimeiroIndice.
          */

@@ -104,73 +104,55 @@ namespace palavra_lista {
 }
 
 namespace tbl_indxd {
-    void criarSegundoIndice(PrimeiroIndice &indice) {
-        SegundoIndice *no = &indice.celula;
-        palavra_lista::criarLista(no->lista);
-        int i = 25;
-
-        while (i > 0) {
-            no->prox = new SegundoIndice;
-            no = no->prox;
-            palavra_lista::criarLista(no->lista);
-            no->prox = NULL;
-            i--;
-        }
-    }
-
     void criarTabela(TabelaIndexada &tabela) {
         tabela.dados = new PrimeiroIndice;
         PrimeiroIndice *no = tabela.dados;
-        criarSegundoIndice(*no);
+        no->celula = NULL;
 
         int i = 25;
         while (i > 0) {
             no->prox = new PrimeiroIndice;
             no = no->prox;
-            criarSegundoIndice(*no);
+            no->celula = NULL;
             no->prox = NULL;
             i--;
         }
     }
 
     namespace utils {
-        /*
-         * Ponteiro para ListaExterna foi enviado por ser mais conviente para percorrer a lista.
-         * ListaExterna é percorrida em busca do nó que representa a primeira letra da String.
-         *
-         * Retorna um ponteiro para ListaInterna.
-         */
-        SegundoIndice *buscaSegundoIndice(TabelaIndexada &tabela, string_lista::String &palavra) {
-            PrimeiroIndice *listaPtr = tabela.dados;
+        PrimeiroIndice *buscaIndice(TabelaIndexada &tabela, string_lista::String &palavra) {
             int caractere = palavra.primeiro->prox->val;
+            PrimeiroIndice *indice = tabela.dados;
 
             for (int i = caractere - 'A'; i > 0; i--)
-                listaPtr = listaPtr->prox;
+                indice = indice->prox;
 
-            return &listaPtr->celula;
+            return indice;
         }
 
-        /*
-         * Ponteiro para ListaInterna foi enviado por ser mais conviente para percorrer a lista.
-         * ListaInterna é percorrida em busca do nó que representa a segunda letra da String.
-         *
-         * Retorna um ponteiro para Palavra (que é a lista de palavras).
-         */
-        palavra_lista::ListaPalavra *buscaListaPalavra(SegundoIndice *lista, string_lista::String &palavra) {
-            int caractere = palavra.primeiro->prox->prox->val;
+        palavra_lista::NodoPalavra *buscaProximoIndice(PrimeiroIndice *indice) {
+            palavra_lista::NodoPalavra *proximo_indice = NULL;
 
-            for (int i = caractere - 'A'; i > 0; i--)
-                lista = lista->prox;
+            while (indice->prox != NULL && indice->prox->celula == NULL)
+                indice = indice->prox;
+            if (indice->prox)
+                proximo_indice = indice->prox->celula;
 
-            return &lista->lista;
+            return proximo_indice;
         }
 
         bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela) // passo a palavra inserida e a lista externa (que contem a letra inicial de cada palavra da lista)
         {
-            SegundoIndice *indice2 = buscaSegundoIndice(tabela, entrada);
-            palavra_lista::ListaPalavra* lista_palavra = buscaListaPalavra(indice2, entrada);
-            palavra_lista::NodoPalavra* palavra_no = lista_palavra->primeiro->prox;
-            while (palavra_no != NULL)
+            palavra_lista::NodoPalavra *palavra_no, *proximo_indice;
+            PrimeiroIndice *indice = buscaIndice(tabela, entrada);
+
+            if (indice->celula == NULL)
+                return false;
+
+            palavra_no = indice->celula;
+            proximo_indice = buscaProximoIndice(indice);
+
+            while (palavra_no != proximo_indice)
             {
                 if (string_lista::utils::comparaString(entrada, palavra_no->palavra))
                     return true;
@@ -182,30 +164,27 @@ namespace tbl_indxd {
         void escolherPalavra(TabelaIndexada &tabela, string_lista::String &palavra) {
             int totalPalavras = 0;
             int numAleatorio;
-            SegundoIndice *listaI;
-            palavra_lista::NodoPalavra *atual;
+            palavra_lista::NodoPalavra *atual, *prox;
+            PrimeiroIndice *auxL;
 
-            while (totalPalavras == 0) {
-                PrimeiroIndice *auxL = tabela.dados;
+            do {
+                auxL = tabela.dados;
                 numAleatorio = rand() % 26;
                 for (int i = 0; i < numAleatorio; i++)
                     auxL = auxL->prox;
+            } while (auxL->celula == NULL);
 
-                listaI = &auxL->celula;
-                numAleatorio = rand() % 26;
-                for (int i = 0; i < numAleatorio; i++)
-                    listaI = listaI->prox;
-
-                atual = listaI->lista.primeiro->prox;
-                totalPalavras = 0;
-                while (atual != NULL) {
-                    totalPalavras++;
-                    atual = atual->prox;
-                }
-
+            atual = auxL->celula;
+            prox = buscaProximoIndice(auxL);
+            totalPalavras = 0;
+            char c = atual->palavra.primeiro->prox->val;
+            while (atual != prox) {
+                totalPalavras++;
+                atual = atual->prox;
             }
+
             numAleatorio = rand() % totalPalavras;
-            atual = listaI->lista.primeiro->prox;
+            atual = auxL->celula;
             for (int i = 0; i < numAleatorio; i++)
                 atual = atual->prox;
 
@@ -214,44 +193,24 @@ namespace tbl_indxd {
 
         void indexarTabela(TabelaIndexada &tabela, palavra_lista::ListaPalavra &listaPalavra) {
             palavra_lista::NodoPalavra *no = listaPalavra.primeiro->prox;
+            PrimeiroIndice *indice = tabela.dados;
+            char primeiroCaractere;
 
             while (no != NULL) {
-                SegundoIndice *indice2 = buscaSegundoIndice(tabela, no->palavra);
-                palavra_lista::ListaPalavra *listaPlvr = buscaListaPalavra(indice2, no->palavra);
-                palavra_lista::insereFinal(*listaPlvr, no->palavra);
-                no = no->prox;
-            }
-        }
+                primeiroCaractere = no->palavra.primeiro->prox->val;
 
-        void deletarConteudoSegundoIndice(PrimeiroIndice &indice1) {
-            SegundoIndice *indice = &indice1.celula;
-
-            while (indice != NULL) {
-                palavra_lista::utils::deletar(indice->lista);
-                indice = indice->prox;
-            }
-        }
-
-        void deletarConteudoTabela(TabelaIndexada &tabela) {
-            PrimeiroIndice *indice1 = tabela.dados;
-
-            while (indice1 != NULL) {
-                deletarConteudoSegundoIndice(*indice1);
-                indice1 = indice1->prox;
+                indice = buscaIndice(tabela, no->palavra);
+                indice->celula = no;
+                while (no != NULL && primeiroCaractere == no->palavra.primeiro->prox->val) {
+                    no = no->prox;
+                }
             }
         }
 
         void destruir(TabelaIndexada &tabela) {
-            deletarConteudoTabela(tabela);
             PrimeiroIndice *indice1 = tabela.dados;
 
             while (indice1 != NULL) {
-                SegundoIndice *indice2 = indice1->celula.prox;
-                while (indice2 != NULL) {
-                    SegundoIndice *aux = indice2->prox;
-                    delete indice2;
-                    indice2 = aux;
-                }
                 PrimeiroIndice *aux = indice1->prox;
                 delete indice1;
                 indice1 = aux->prox;

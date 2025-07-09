@@ -53,7 +53,6 @@ int main(void) {
                 telaJogo(janelaAtiva, tabela);
                 palavra_lista::utils::deletarConteudo(dicionario);
                 palavra_lista::utils::deletar(dicionario);
-                tbl_indxd::utils::deletarConteudoTabela(tabela);
             }
             opcao = INVALIDO;
             break;
