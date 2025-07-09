@@ -276,7 +276,6 @@ void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista:
 
     if (tempoPassado >= 1.0f) {
         tempoRestante--;
-        //if (tempoRestante == 0) tempoRestante = 60; // Temporário
         tempoPassado -= 1.0f;
         string_lista::utils::intStr(tempoS, tempoRestante, 2);
         lista_grafica::utils::deletar(tempoV);
