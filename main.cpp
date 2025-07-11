@@ -48,11 +48,14 @@ int main(void) {
         case JOGAR:
             opcaoDicionario = telaSelecaoDicionario(janelaAtiva);
             if (opcaoDicionario != INVLD) {
-                carregarDicionario(opcaoDicionario, dicionario);
-                tbl_indxd::utils::indexarTabela(tabela, dicionario);
-                telaJogo(janelaAtiva, tabela);
-                palavra_lista::utils::deletarConteudo(dicionario);
-                palavra_lista::utils::deletar(dicionario);
+                bool loopar = true;
+                while (loopar) {
+                    carregarDicionario(opcaoDicionario, dicionario);
+                    tbl_indxd::utils::indexarTabela(tabela, dicionario);
+                    loopar = telaJogo(janelaAtiva, dicionario, tabela);
+                    palavra_lista::utils::deletarConteudo(dicionario);
+                    palavra_lista::utils::deletar(dicionario);
+                }
             }
             opcao = INVALIDO;
             break;
