@@ -21,20 +21,21 @@ void escolherPalavra(string_lista::String &palavra, string_lista::String &embara
 void processarGraficosEntrada(lista_grafica::ListaLetra &lista, TecladoStatus &status);
 void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista::String &tempoS, lista_grafica::ListaLetra &tempoV);
 void processarPontuacao(int pontuacao, string_lista::String &pontuacaoS, lista_grafica::ListaLetra &pontuacaoV);
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista);
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista, palavra_lista::NodoPalavra* &no);
 void botaoContinuarSair(bool &janelaAtiva);
 
-void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
+bool telaJogo(bool &janelaAtiva, palavra_lista::ListaPalavra &dicio, tbl_indxd::TabelaIndexada &tabela) {
     string_lista::String entrada, palavraSorteada, palavraEmbaralhada, tempoS, pontuacaoS;
     palavra_lista::ListaPalavra listaPalavras;
+    palavra_lista::NodoPalavra *aux;
     lista_grafica::ListaLetra entradaV, palavraSorteadaV, tempoV, pontuacaoV;
     lista_grafica::ListaCaixa placeholders;
     lista_list::ListaLista listaPalavrasV;
     Mouse *mouse = obterMouse();
     TecladoStatus tecladoStatus;
     float tempoPassado = 0.0f;
-    int tempoRestante = 60, pontuacao = 0;
-    bool sucesso, esc, enter, resetar, salvo = false;
+    int tempoRestante = 30, pontuacao = 0;
+    bool sucesso, resetar, salvo = false, retorno = false;
 
     // Entrada do usuário, palavra sorteada e plaveholders
     inicializarPalavraSorteada(palavraSorteada, palavraEmbaralhada, palavraSorteadaV);
@@ -50,31 +51,27 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
 
 
     while (janelaAtiva) {
-        sucesso = false; esc = false; enter = false; resetar = false;
+        sucesso = false; resetar = false;
         if (tempoRestante == 0) {
             if (!salvo) {
                 salvo = true;
+                lista_grafica::utils::deletar(palavraSorteadaV);
+                lista_grafica::utils::inserirString(palavraSorteadaV, palavraSorteada, 3.0f);
                 palavra_lista::utils::salvarEmDisco(listaPalavras);
             }
             if (IsKeyPressed(KEY_ENTER)) {
-                tempoRestante = 60;
-                pontuacao = 0;
-                resetar = true;
-                salvo = false;
-                processarPontuacao(pontuacao, pontuacaoS, pontuacaoV);
-                palavra_lista::utils::deletarConteudo(listaPalavras);
-                palavra_lista::utils::deletar(listaPalavras);
-                lista_list::utils::deletar(listaPalavrasV);
-                string_lista::utils::deletar(entrada);
-                lista_grafica::utils::deletar(entradaV);
-            } else if (IsKeyPressed(KEY_ESCAPE))
+                retorno = true;
                 break;
+            } else if (IsKeyPressed(KEY_ESCAPE)){
+                retorno = false;
+                break;
+            }
         } else {
             tecladoStatus = lerEntradaTeclado(entrada, entradaV, palavraSorteada.primeiro->val);
             processarGraficosEntrada(entradaV, tecladoStatus);
             processarTemporizado(tempoRestante, tempoPassado, tempoS, tempoV);
             if (entrada.primeiro->val >= 3 && IsKeyPressed(KEY_ENTER)) {
-                Resultado resultado = validarPalavra(entrada, palavraSorteada, tabela, listaPalavras);
+                Resultado resultado = validarPalavra(entrada, palavraSorteada, tabela, listaPalavras, aux);
                 if (resultado == INVALIDA) {
                     string_lista::utils::deletar(entrada);
                     lista_grafica::utils::deletar(entradaV);
@@ -88,6 +85,15 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
                 }
             }
         }
+        if (sucesso) {
+            processarPontuacao(pontuacao, pontuacaoS, pontuacaoV);
+            palavra_lista::insereFinal(listaPalavras, aux->palavra);
+            tbl_indxd::utils::corrigeTabela(tabela, aux);
+            palavra_lista::removePosicao(dicio, aux);
+            string_lista::utils::deletar(entrada);
+            lista_grafica::utils::deletar(entradaV);
+            lista_list::utils::inserePalavra(listaPalavrasV, listaPalavras);
+        }
         if (resetar) {
             string_lista::utils::deletar(palavraEmbaralhada);
             escolherPalavra(palavraSorteada, palavraEmbaralhada, tabela);
@@ -95,17 +101,11 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
             lista_grafica::utils::deletar(placeholders);
             lista_grafica::utils::inserirString(palavraSorteadaV, palavraEmbaralhada, 3.0f);
             letrasPlaceholders(palavraSorteadaV, placeholders);
-            tempoRestante = 60;
+            tempoRestante = 30;
             tempoPassado = 0.0f;
             processarTemporizado(tempoRestante, tempoPassado, tempoS, tempoV);
         }
-        if (sucesso) {
-            processarPontuacao(pontuacao, pontuacaoS, pontuacaoV);
-            palavra_lista::utils::inserePalavra(listaPalavras, entrada);
-            string_lista::utils::deletar(entrada);
-            lista_grafica::utils::deletar(entradaV);
-            lista_list::utils::inserePalavra(listaPalavrasV, listaPalavras);
-        }
+
         BeginDrawing();
         ClearBackground((Color) {7, 56, 62, 255});
         desenharFundo();
@@ -131,6 +131,8 @@ void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela) {
     lista_grafica::utils::destruir(pontuacaoV);
     lista_grafica::utils::destruir(placeholders);
     lista_list::utils::destruir(listaPalavrasV);
+
+    return retorno;
 }
 
 void inicializarCaixaSelecaoDicionario(CaixaTexto &ct1, CaixaTexto &ct2);
@@ -283,16 +285,17 @@ void processarTemporizado(int &tempoRestante, float &tempoPassado, string_lista:
     }
 }
 
-Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista) {
+Resultado validarPalavra(string_lista::String &entrada, string_lista::String &palavraEscolhida, tbl_indxd::TabelaIndexada &tabela, palavra_lista::ListaPalavra &lista, palavra_lista::NodoPalavra* &no) {
     using namespace string_lista::utils;
     if (!LetrasContidasNaPalavra(entrada, palavraEscolhida))
         return INVALIDA;
     if (palavra_lista::pesquisa(lista, entrada))
         return INVALIDA;
-    if (comparaString(entrada, palavraEscolhida))
-        return ACERTOU;
-    if (tbl_indxd::utils::palavraInseridaExiste(entrada, tabela))
+    if (tbl_indxd::utils::palavraInseridaExiste(entrada, tabela, no)) {
+        if (no->palavra.primeiro == palavraEscolhida.primeiro)
+            return ACERTOU;
         return VALIDA;
+    }
     return INVALIDA;
 }
 

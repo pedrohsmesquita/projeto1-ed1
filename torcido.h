@@ -8,7 +8,7 @@
 
 enum Dicionario {INVLD, PORTUGUES, INGLES};
 
-void telaJogo(bool &janelaAtiva, tbl_indxd::TabelaIndexada &tabela);
+bool telaJogo(bool &janelaAtiva, palavra_lista::ListaPalavra &dicio, tbl_indxd::TabelaIndexada &tabela);
 
 Dicionario telaSelecaoDicionario(bool &janelaAtiva);
 
