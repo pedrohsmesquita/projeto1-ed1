@@ -7,6 +7,7 @@ namespace palavra_lista {
     struct NodoPalavra {
         string_lista::String palavra;
         NodoPalavra *prox;
+        NodoPalavra *ant;
     };
 
     // É a, de fato, lista de palavras
@@ -23,11 +24,11 @@ namespace palavra_lista {
 
     void removeFinal(ListaPalavra &lista);
 
+    void removePosicao(ListaPalavra &lista, NodoPalavra *no);
+
     bool pesquisa(ListaPalavra &lista, string_lista::String &listaS);
 
     namespace utils {
-        void inserePalavra(ListaPalavra &lista, string_lista::String &palavra);
-
         void salvarEmDisco(ListaPalavra &lista);
 
         /**
@@ -74,11 +75,13 @@ namespace tbl_indxd {
     void criarTabela(TabelaIndexada &tabela);
 
     namespace utils {
-        bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela);
+        bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela, palavra_lista::NodoPalavra* &no);
 
         void escolherPalavra(TabelaIndexada &tabela, string_lista::String &palavra);
 
         void indexarTabela(TabelaIndexada &tabela, palavra_lista::ListaPalavra &listaPalavra);
+
+        void corrigeTabela(TabelaIndexada &tabela, palavra_lista::NodoPalavra *no);
 
         /**
          * Destrói toda a TabelaIndexada, tanto SegundoIndice como o PrimeiroIndice.

@@ -15,6 +15,9 @@ namespace palavra_lista {
         NodoPalavra *ptr = new NodoPalavra;
         ptr->palavra = palavra;
         ptr->prox = NULL;
+        if (lista.ultimo == lista.primeiro)
+            ptr->ant = NULL;
+        else ptr->ant = lista.ultimo;
         lista.ultimo->prox = ptr;
         lista.ultimo = ptr;
     }
@@ -22,15 +25,24 @@ namespace palavra_lista {
     void removeFinal(ListaPalavra &lista) {
         if (vazia(lista))
             return ;
-        NodoPalavra *aux = lista.primeiro->prox, *tmp = lista.primeiro;
-
-        while (aux->prox != NULL) {
-            tmp = aux;
-            aux = aux->prox;
-        }
-        tmp->prox = NULL;
-        lista.ultimo = tmp;
+        NodoPalavra *aux = lista.ultimo;
+        lista.ultimo = aux->ant;
+        if (aux == NULL)
+            lista.ultimo = lista.primeiro;
+        lista.ultimo->prox = NULL;
         delete aux;
+    }
+
+    void removePosicao(ListaPalavra &lista, NodoPalavra *no) {
+        if (vazia(lista) || no == NULL)
+            return;
+        if (no->ant != NULL)
+            no->ant->prox = no->prox;
+        else lista.primeiro->prox = no->prox;
+        if (no->prox != NULL)
+            no->prox->ant = no ->ant;
+        else lista.ultimo = no->ant;
+        delete no;
     }
 
     void removeInicio(ListaPalavra &lista) {
@@ -40,6 +52,7 @@ namespace palavra_lista {
         lista.primeiro->prox = aux->prox;
         if (lista.primeiro->prox == NULL)
             lista.ultimo = lista.primeiro;
+        else lista.primeiro->prox->ant = NULL;
         delete aux;
     }
 
@@ -56,13 +69,6 @@ namespace palavra_lista {
     }
 
     namespace utils {
-        void inserePalavra(ListaPalavra &lista, string_lista::String &palavra) {
-            string_lista::String copia;
-            string_lista::criarLista(copia);
-            string_lista::utils::strcpy(copia, palavra);
-            insereFinal(lista, copia);
-        }
-
         void salvarEmDisco(ListaPalavra &lista) {
             NodoPalavra *no = lista.primeiro->prox;
             std::ofstream arquivo;
@@ -141,7 +147,20 @@ namespace tbl_indxd {
             return proximo_indice;
         }
 
-        bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela) // passo a palavra inserida e a lista externa (que contem a letra inicial de cada palavra da lista)
+        void corrigeTabela(TabelaIndexada &tabela, palavra_lista::NodoPalavra *no) {
+            PrimeiroIndice *ptr = tabela.dados;
+
+            while (ptr != NULL && ptr->celula != no)
+                ptr = ptr->prox;
+            if (ptr != NULL && ptr->celula == no){
+                palavra_lista::NodoPalavra *p = no->prox;
+                if (p != NULL && p->palavra.primeiro->prox->val == no->palavra.primeiro->prox->val)
+                    ptr->celula = no->prox;
+                else ptr->celula = NULL;
+            }
+        }
+
+        bool palavraInseridaExiste(string_lista::String &entrada, TabelaIndexada &tabela, palavra_lista::NodoPalavra* &no) // passo a palavra inserida e a lista externa (que contem a letra inicial de cada palavra da lista)
         {
             palavra_lista::NodoPalavra *palavra_no, *proximo_indice;
             PrimeiroIndice *indice = buscaIndice(tabela, entrada);
@@ -154,10 +173,13 @@ namespace tbl_indxd {
 
             while (palavra_no != proximo_indice)
             {
-                if (string_lista::utils::comparaString(entrada, palavra_no->palavra))
+                if (string_lista::utils::comparaString(entrada, palavra_no->palavra)) {
+                    no = palavra_no;
                     return true;
+                }
                 palavra_no = palavra_no->prox;
             }
+            no = NULL;
             return false;
         }
 
