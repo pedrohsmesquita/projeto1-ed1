@@ -97,6 +97,7 @@ int main(void) {
         }
     }
 
+    palavra_lista::utils::destruicaoProfunda(dicionario);
     tbl_indxd::utils::destruir(tabela);
     descarregarLogotipo();
     descarregarFundo();
