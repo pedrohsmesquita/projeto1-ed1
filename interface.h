@@ -112,7 +112,7 @@ namespace lista_grafica {
 
     void removeFinal(ListaLetra &lista);
 
-    void removeFinal(ListaCaixa &lista);
+    void removeInicio(ListaCaixa &lista);
 
     namespace utils {
         void inserirString(ListaLetra &lista, string_lista::String &listaS, float espaco);

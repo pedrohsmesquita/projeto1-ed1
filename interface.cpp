@@ -76,20 +76,6 @@ namespace lista_grafica {
         delete p;
     }
 
-    void removeFinal(ListaCaixa &lista) {
-        if (vazia(lista))
-            return;
-        NodoCaixa *tmp = lista.primeiro, *aux = lista.primeiro->prox;
-
-        while (aux->prox != NULL) {
-            tmp = aux;
-            aux = aux->prox;
-        }
-        tmp->prox = NULL;
-        lista.ultimo = tmp;
-        delete aux;
-    }
-
     void removeInicio(ListaCaixa &lista) {
         if (vazia(lista))
             return;
